@@ -1,0 +1,34 @@
+{
+  "name": "meta-toolkit",
+  "description": "Toolkit to help with meta programming and OOP",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uhop/meta-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uhop/meta-toolkit/issues"
+  },
+  "homepage": "https://github.com/uhop/meta-toolkit#readme",
+  "keywords": ["meta", "oop", "programming", "toolkit"],
+  "author": "Eugene Lazutkin <eugene.lazutkin@gmail.com> (http://www.lazutkin.com/)",
+  "license": "BSD-3-Clause",
+  "files": [
+    "/src"
+  ],
+  "tape6": {
+    "tests": [
+      "/tests/test-*.*js"
+    ]
+  },
+  "devDependencies": {
+    "tape-six": "^0.9.6"
+  }
+}
