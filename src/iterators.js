@@ -1,7 +1,7 @@
 'use strict';
 
 export const augmentIterator = iterator => {
-  if (!Object.hasOwnProperty(Symbol.iterator)) {
+  if (!iterator.hasOwnProperty(Symbol.iterator)) {
     iterator[Symbol.iterator] = function () {
       return this;
     };
@@ -19,11 +19,11 @@ export const mapIterator = (iterator, callbackFn) => {
   if (typeof iterator?.map == 'function') return iterator.map(callbackFn);
   return {
     [Symbol.iterator]: () => {
-      const iterable = iterator[Symbol.iterator]();
+      const it = iterator[Symbol.iterator]();
       let index = 0;
       return normalizeIterator({
         next: () => {
-          const result = iterable.next();
+          const result = it.next();
           if (result.done) return result;
           return {value: callbackFn(result.value, index++)};
         }
@@ -36,12 +36,12 @@ export const filterIterator = (iterator, callbackFn) => {
   if (typeof iterator?.filter == 'function') return iterator.filter(callbackFn);
   return {
     [Symbol.iterator]: () => {
-      const iterable = iterator[Symbol.iterator]();
+      const it = iterator[Symbol.iterator]();
       let index = 0;
       return normalizeIterator({
         next: () => {
           for (;;) {
-            const result = iterable.next();
+            const result = it.next();
             if (result.done) return result;
             if (callbackFn(result.value, index++)) return result;
           }
