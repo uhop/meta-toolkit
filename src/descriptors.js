@@ -41,6 +41,7 @@ export const addDescriptors = (target, dict, force) => {
     if (!descriptor || !descriptor.enumerable) continue;
     addDescriptor(target, [symbol], dict[symbol], force);
   }
+  return target;
 };
 
 export const addAccessor = (target, names, getter, setter, force) => addDescriptor(target, names, makeAccessors(getter, setter), force);
@@ -54,6 +55,7 @@ export const addGetters = (target, dict, force) => {
     if (!descriptor || !descriptor.enumerable) continue;
     addDescriptor(target, [symbol], makeGetter(dict[symbol]), force);
   }
+  return target;
 };
 
 export const copyDescriptors = (target, source, names, force) => {
