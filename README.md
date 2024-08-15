@@ -38,10 +38,67 @@ helping to generate classes, objects, prototypes, iterators, and more.
 
 See the full documentation in the [wiki](https://github.com/uhop/meta-toolkit/wiki).
 
+## Examples
+
+Generating names:
+
+```js
+import {toCamelCase, toPascalCase, toSnakeCase,
+  toAllCapsSnakeCase, fromKebabCase} from 'meta-toolkit/names.js';
+
+const names = fromKebabCase('foo-bar-baz');
+
+console.log(toCamelCase(names)); // fooBarBaz
+console.log(toPascalCase(names)); // FooBarBaz
+console.log(toSnakeCase(names)); // foo_bar_baz
+console.log(toAllCapsSnakeCase(names)); // FOO_BAR_BAZ
+```
+
+Aliasing properties:
+
+```js
+import {addAliases} from 'meta-toolkit/aliases.js';
+
+class Foo {
+  constructor() { this.value = 0; }
+  get double() { return this.value * 2; }
+  line(a, b) { return a * this.value + b; }
+}
+addAliases(Foo.prototype, {
+  double: 'x2, duplicate',
+  line: 'linear'
+});
+
+const f = new Foo(2);
+
+console.log(f.double);       // 4
+console.log(f.x2);           // 4
+console.log(f.linear(1, 2)); // 4
+```
+
+Object manipulation with paths:
+
+```js
+import {set, get, remove, forceSet} from 'meta-toolkit/path.js';
+
+const object = {};
+
+forceSet(object, 'a.b.c', 1); // object = {a: {b: {c: 1}}}
+
+get(object, 'a.b.c');         // 1
+get(object, 'a');             // {b: {c: 1}}
+
+set(object, 'a.b.c', 2);      // object = {a: {b: {c: 2}}}
+set(object, 'a.b.d', 3);      // object = {a: {b: {c: 2, d: 3}}}
+
+remove(object, 'a.b.c');      // object = {a: {b: {d: 3}}}
+remove(object, 'a.b');        // object = {a: {}}
+```
+
 ## License
 
 BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
-* 1.0.1 *Initial release.*
+* 1.0.0 *Initial release.*
