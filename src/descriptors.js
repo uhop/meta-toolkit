@@ -1,21 +1,21 @@
 'use strict';
 
-export const defaultDescriptor = {configurable: true, enumerable: true};
+export const defaultDescriptor = {configurable: true, enumerable: false};
 
-export const makeGetter = (getter, defaultDescriptor = defaultDescriptor) => {
-  const descriptor = {...defaultDescriptor};
+export const makeGetter = (getter, initDescriptor = defaultDescriptor) => {
+  const descriptor = {...initDescriptor};
   if (typeof getter == 'function') descriptor.get = getter;
   return descriptor;
 };
 
-export const makeSetter = (setter, defaultDescriptor = defaultDescriptor) => {
-  const descriptor = {...defaultDescriptor};
+export const makeSetter = (setter, initDescriptor = defaultDescriptor) => {
+  const descriptor = {...initDescriptor};
   if (typeof setter == 'function') descriptor.set = setter;
   return descriptor;
 };
 
-export const makeAccessors = (getter, setter, defaultDescriptor = defaultDescriptor) => {
-  const descriptor = {...defaultDescriptor};
+export const makeAccessors = (getter, setter, initDescriptor = defaultDescriptor) => {
+  const descriptor = {...initDescriptor};
   if (typeof getter == 'function') descriptor.get = getter;
   if (typeof setter == 'function') descriptor.set = setter;
   return descriptor;
