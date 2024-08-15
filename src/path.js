@@ -7,7 +7,7 @@ export const get = (object, path, delimiter = '.', defaultValue) => {
     path = path.split(delimiter);
   }
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object]) return defaultValue;
+    if (!object || !dereferable[typeof object] || !(path[i] in object)) return defaultValue;
     object = object[path[i]];
   }
   return object;
@@ -19,7 +19,7 @@ export const set = (object, path, value, delimiter = '.', defaultValue) => {
   }
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object]) return defaultValue;
+    if (!object || !dereferable[typeof object] || (i + 1 < path.length && !(path[i] in object))) return defaultValue;
     parent = object;
     object = object[path[i]];
   }
@@ -36,7 +36,7 @@ export const forceSet = (object, path, value, delimiter = '.') => {
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
     if (!object || !dereferable[typeof object]) {
-      object =parent[path[i - 1]] = {};
+      object = parent[path[i - 1]] = {};
     }
     parent = object;
     object = object[path[i]];
@@ -53,7 +53,7 @@ export const remove = (object, path, delimiter = '.', defaultValue) => {
   if (!path.length) return defaultValue;
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object]) return defaultValue;
+    if (!object || !dereferable[typeof object] || !(path[i] in object)) return defaultValue;
     parent = object;
     object = object[path[i]];
   }
