@@ -1,10 +1,12 @@
 'use strict';
 
-const defaultPrototype = Object.prototype;
-
-export function* prototypes(object) {
-  while (object && object !== defaultPrototype) {
-    yield object;
+export function* prototypes(object, skipSelf) {
+  while (object && object !== Object.prototype) {
+    if (skipSelf) {
+      skipSelf = false;
+    } else {
+      yield object;
+    }
     object = Object.getPrototypeOf(object);
   }
 }
