@@ -35,6 +35,12 @@ helping to generate classes, objects, prototypes, iterators, and more.
   * Set value in a nested object by path &mdash; `set()`.
 * Options (`meta-toolkit/options.js`) provides a set of helpers to organize options for constructors:
   * Copy options according to some defaults &mdash; `copyOptions()`.
+* Comparators (`meta-toolkit/comparators.js`) provides a set of helpers to convert between different
+  types of comparator functions:
+  * Create a compare function from a less function and vice versa &mdash; `compareFromLess()`,
+    `lessFromCompare()`.
+  * Create an equality function from a less function &mdash; `equalFromLess()`.
+  * Reverse comparators &mdash; `reverseCompare()`, `reverseLess()`.
 
 See the full documentation in the [wiki](https://github.com/uhop/meta-toolkit/wiki).
 
@@ -48,9 +54,9 @@ import {toCamelCase, toPascalCase, toSnakeCase,
 
 const names = fromKebabCase('foo-bar-baz');
 
-console.log(toCamelCase(names)); // fooBarBaz
-console.log(toPascalCase(names)); // FooBarBaz
-console.log(toSnakeCase(names)); // foo_bar_baz
+console.log(toCamelCase(names));        // fooBarBaz
+console.log(toPascalCase(names));       // FooBarBaz
+console.log(toSnakeCase(names));        // foo_bar_baz
 console.log(toAllCapsSnakeCase(names)); // FOO_BAR_BAZ
 ```
 
@@ -101,4 +107,5 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
+* 1.1.0 *Added comparator utilities.*
 * 1.0.0 *Initial release.*
