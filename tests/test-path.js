@@ -18,7 +18,7 @@ test('Path', t => {
   t.deepEqual(remove(object, 'a.b'), {c: 2});
   t.deepEqual(object, {a: {}});
 
-  set(object, 'a/b', 1, '/');
+  set(object, 'a/b', 1, {delimiter: '/'});
   t.deepEqual(object, {a: {b: 1}});
 
   forceSet(object, ['a', 'b', 'c'], 3);
@@ -26,9 +26,9 @@ test('Path', t => {
 
   const nothing = Symbol();
 
-  t.equal(get(object, 'a.b.c', '.', nothing), 3);
-  t.equal(get(object, 'a.B.c', '.', nothing), nothing);
-  t.equal(get(object, 'a.b.d', '.', nothing), nothing);
+  t.equal(get(object, 'a.b.c', {defaultValue: nothing}), 3);
+  t.equal(get(object, 'a.B.c', {defaultValue: nothing}), nothing);
+  t.equal(get(object, 'a.b.d', {defaultValue: nothing}), nothing);
 
   t.deepEqual(remove(object, 'a'), {b: {c: 3}});
 });

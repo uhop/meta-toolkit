@@ -2,7 +2,7 @@
 
 const dereferable = {object: 1, function: 1};
 
-export const get = (object, path, delimiter = '.', defaultValue) => {
+export const get = (object, path, {delimiter = '.', defaultValue} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
@@ -13,7 +13,7 @@ export const get = (object, path, delimiter = '.', defaultValue) => {
   return object;
 };
 
-export const set = (object, path, value, delimiter = '.', defaultValue) => {
+export const set = (object, path, value, {delimiter = '.', defaultValue} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
@@ -28,7 +28,7 @@ export const set = (object, path, value, delimiter = '.', defaultValue) => {
   return object;
 };
 
-export const forceSet = (object, path, value, delimiter = '.') => {
+export const forceSet = (object, path, value, {delimiter = '.'} = {}) => {
   if (!object || !dereferable[typeof object]) throw new TypeError('Invalid object');
   if (typeof path == 'string') {
     path = path.split(delimiter);
@@ -46,7 +46,7 @@ export const forceSet = (object, path, value, delimiter = '.') => {
   return object;
 };
 
-export const remove = (object, path, delimiter = '.', defaultValue) => {
+export const remove = (object, path, {delimiter = '.', defaultValue} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
