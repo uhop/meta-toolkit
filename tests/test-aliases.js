@@ -2,7 +2,7 @@
 
 import test from 'tape-six';
 
-import {addAlias, addAliases} from 'meta-toolkit/aliases.js';
+import {addAlias, addAliases} from '../src/aliases.js';
 
 test('Aliases: addAlias()', t => {
   const foo = Symbol(),

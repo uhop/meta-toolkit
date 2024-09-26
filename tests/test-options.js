@@ -2,7 +2,7 @@
 
 import test from 'tape-six';
 
-import {copyOptions} from 'meta-toolkit/options.js';
+import {copyOptions} from '../src/options.js';
 
 test('Options: copyOptions()', t => {
   const object = {foo: 1, bar: 2, baz: 3};

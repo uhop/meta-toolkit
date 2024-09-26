@@ -2,7 +2,7 @@
 
 import test from 'tape-six';
 
-import {get, set, remove, forceSet} from 'meta-toolkit/path.js';
+import {get, set, remove, forceSet} from '../src/path.js';
 
 test('Path', t => {
   const object = {};

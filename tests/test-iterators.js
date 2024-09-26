@@ -2,7 +2,7 @@
 
 import test from 'tape-six';
 
-import {augmentIterator, normalizeIterator, mapIterator, filterIterator} from 'meta-toolkit/iterators.js';
+import {augmentIterator, normalizeIterator, mapIterator, filterIterator} from '../src/iterators.js';
 
 const range = (from, to) => {
   let index = from;

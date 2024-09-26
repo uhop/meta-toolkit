@@ -2,7 +2,7 @@
 
 import test from 'tape-six';
 
-import {prototypes, getPropertyDescriptor} from 'meta-toolkit/prototypes.js';
+import {prototypes, getPropertyDescriptor} from '../src/prototypes.js';
 
 class Foo {
   foo() {}
@@ -20,10 +20,16 @@ test('Prototypes: prototypes()', t => {
   const baz = new Baz();
 
   t.deepEqual([...prototypes(baz)], [baz, Baz.prototype, Bar.prototype, Foo.prototype]);
-  t.deepEqual([...prototypes(baz)].map(p => p.constructor.name), ['Baz', 'Baz', 'Bar', 'Foo']);
+  t.deepEqual(
+    [...prototypes(baz)].map(p => p.constructor.name),
+    ['Baz', 'Baz', 'Bar', 'Foo']
+  );
 
   t.deepEqual([...prototypes(baz, true)], [Baz.prototype, Bar.prototype, Foo.prototype]);
-  t.deepEqual([...prototypes(baz, true)].map(p => p.constructor.name), ['Baz', 'Bar', 'Foo']);
+  t.deepEqual(
+    [...prototypes(baz, true)].map(p => p.constructor.name),
+    ['Baz', 'Bar', 'Foo']
+  );
 });
 
 test('Prototypes: getPropertyDescriptor()', t => {

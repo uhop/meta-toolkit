@@ -13,7 +13,7 @@ import {
   fromSnakeCase,
   toKebabCase,
   fromKebabCase
-} from 'meta-toolkit/names.js';
+} from '../src/names.js';
 
 test('Names: capitalize', t => {
   t.equal(capitalize('foo'), 'Foo');

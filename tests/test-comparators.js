@@ -2,7 +2,7 @@
 
 import test from 'tape-six';
 
-import {compareFromLess, lessFromCompare, equalFromLess, reverseLess, reverseCompare} from 'meta-toolkit/comparators.js';
+import {compareFromLess, lessFromCompare, equalFromLess, reverseLess, reverseCompare} from '../src/comparators.js';
 
 test('Comparators: compareFromLess()', t => {
   t.ok(compareFromLess((a, b) => a < b)(1, 2) < 0);
