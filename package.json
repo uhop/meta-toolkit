@@ -1,13 +1,17 @@
 {
   "name": "meta-toolkit",
   "description": "Toolkit to help with meta programming and OOP",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "exports": {
     "./*": "./src/*"
   },
   "scripts": {
-    "test": "tape6 --flags FO"
+    "start": "tape6-server --trace",
+    "test": "tape6 --flags FO",
+    "test:bun": "tape6-bun --flags FO",
+    "test:deno-original": "tape6-deno --flags FO",
+    "test:deno": "deno run -A `tape6-runner main` --flags FO"
   },
   "repository": {
     "type": "git",
@@ -26,9 +30,15 @@
   "tape6": {
     "tests": [
       "/tests/test-*.*js"
-    ]
+    ],
+    "importmap": {
+      "imports": {
+        "tape-six": "/node_modules/tape-six/index.js",
+        "meta-toolkit/": "/src/"
+      }
+    }
   },
   "devDependencies": {
-    "tape-six": "^0.9.6"
+    "tape-six": "^0.12.2"
   }
 }
