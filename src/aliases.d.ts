@@ -4,11 +4,11 @@ export function addAlias(
   object: object,
   name: string | symbol,
   aliases: string | symbol | (string | symbol)[],
-  force: boolean
+  force?: boolean
 ): object;
 
 export function addAliases(
   object: object,
   dict: string | symbol | (string | symbol)[] | AliasDict,
-  force: boolean
+  force?: boolean
 ): object;
