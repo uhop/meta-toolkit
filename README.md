@@ -107,6 +107,7 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
+* 1.1.2 *Added TS types.*
 * 1.1.1 *Updated deps.*
 * 1.1.0 *Added comparator utilities.*
 * 1.0.0 *Initial release.*
