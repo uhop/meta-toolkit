@@ -1,3 +1,5 @@
+// @ts-self-types="./aliases.d.ts"
+
 'use strict';
 
 import {copyDescriptors, addDescriptor} from './descriptors.js';

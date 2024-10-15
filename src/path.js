@@ -1,3 +1,5 @@
+// @ts-self-types="./path.d.ts"
+
 'use strict';
 
 const dereferable = {object: 1, function: 1};

@@ -1,3 +1,5 @@
+// @ts-self-types="./names.d.ts"
+
 'use strict';
 
 export const capitalize = name => (name ? name[0].toUpperCase() + name.slice(1).toLowerCase() : name);
