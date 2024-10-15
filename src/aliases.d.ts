@@ -21,8 +21,8 @@ export function addAlias(
  *
  * @param object target object
  * @param dict dictionary where the keys are the names of the properties to alias and the values are the aliases.
- *   It can be a string containing a comma-separated list of names, a symbol, an array of strings or symbols, or an object with
- *   keys as strings or symbols and values as strings or symbols.
+ *   It can be a string containing a comma-separated list of names, a symbol, an array of strings or symbols,
+ *   or an object {@link AliasDict} with keys as strings or symbols and values as strings or symbols.
  * @param force if truthy, then the alias will be added even if it is already there
  * @returns the target object
  */
