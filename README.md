@@ -107,6 +107,7 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
+* 1.1.4 *Updated dev dependencies.*
 * 1.1.3 *Technical release: added `types` to `package.json`.*
 * 1.1.2 *Added TS types.*
 * 1.1.1 *Updated deps.*
