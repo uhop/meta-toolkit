@@ -1,7 +1,7 @@
 {
   "name": "meta-toolkit",
   "description": "Toolkit to help with meta programming and OOP",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "type": "module",
   "main": "./src/aliases.js",
   "types": "./src/aliases.d.ts",
@@ -50,8 +50,8 @@
     }
   },
   "devDependencies": {
-    "tape-six": "^1.4.4",
-    "tape-six-proc": "^1.1.5",
+    "tape-six": "^1.4.5",
+    "tape-six-proc": "^1.1.6",
     "typescript": "^5.9.3"
   }
 }
