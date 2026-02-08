@@ -1,7 +1,7 @@
 {
   "name": "meta-toolkit",
   "description": "Toolkit to help with meta programming and OOP",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "type": "module",
   "main": "./src/aliases.js",
   "types": "./src/aliases.d.ts",
@@ -12,11 +12,13 @@
     "start": "tape6-server --trace",
     "test": "tape6 --flags FO",
     "test:bun": "tape6-bun --flags FO",
-    "test:deno-original": "tape6-deno --flags FO",
-    "test:deno": "deno run -A `tape6-runner main` --flags FO",
+    "test:deno": "tape6-deno --flags FO",
     "test:proc": "tape6-proc --flags FO",
-    "test:proc:bun": "bun run `npx tape6-proc --self` --flags FO",
-    "test:proc:deno": "deno run -A `npx tape6-proc --self` --flags FO --runFileArgs -A",
+    "test:proc:bun": "bun run `tape6-proc --self` --flags FO",
+    "test:proc:deno": "deno run -A `tape6-proc --self` --flags FO -r -A",
+    "test:seq": "tape6-seq --flags FO",
+    "test:seq:bun": "bun run `tape6-seq --self` --flags FO",
+    "test:seq:deno": "deno run -A `tape6-seq --self` --flags FO",
     "ts-check": "tsc --noEmit"
   },
   "repository": {
@@ -50,8 +52,8 @@
     }
   },
   "devDependencies": {
-    "tape-six": "^1.4.5",
-    "tape-six-proc": "^1.1.6",
+    "tape-six": "^1.7.0",
+    "tape-six-proc": "^1.2.2",
     "typescript": "^5.9.3"
   }
 }
