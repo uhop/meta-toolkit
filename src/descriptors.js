@@ -46,7 +46,8 @@ export const addDescriptors = (target, dict, force) => {
   return target;
 };
 
-export const addAccessor = (target, names, getter, setter, force) => addDescriptor(target, names, makeAccessors(getter, setter), force);
+export const addAccessor = (target, names, getter, setter, force) =>
+  addDescriptor(target, names, makeAccessors(getter, setter), force);
 
 export const addGetters = (target, dict, force) => {
   for (const [names, getter] of Object.entries(dict)) {

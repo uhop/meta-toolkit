@@ -2,7 +2,16 @@
 
 import test from 'tape-six';
 
-import {makeGetter, makeSetter, makeAccessors, addDescriptor, addDescriptors, addAccessor, addGetters, copyDescriptors} from '../src/descriptors.js';
+import {
+  makeGetter,
+  makeSetter,
+  makeAccessors,
+  addDescriptor,
+  addDescriptors,
+  addAccessor,
+  addGetters,
+  copyDescriptors
+} from '../src/descriptors.js';
 
 test('Descriptors: makeGetter()', t => {
   const g = () => 42;

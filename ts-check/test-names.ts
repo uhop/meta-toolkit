@@ -21,9 +21,9 @@ import {
 }
 
 {
-  fromCamelCase('fooBarBaz'), ['foo', 'Bar', 'Baz'];
-  fromCamelCase('foo'), ['foo'];
-  fromCamelCase(''), [''];
+  (fromCamelCase('fooBarBaz'), ['foo', 'Bar', 'Baz']);
+  (fromCamelCase('foo'), ['foo']);
+  (fromCamelCase(''), ['']);
 
   toCamelCase(['foo', 'Bar', 'Baz']) === 'fooBarBaz';
   toCamelCase(['foo', 'bAr', 'bAZ']) === 'fooBarBaz';
@@ -32,9 +32,9 @@ import {
 }
 
 {
-  fromPascalCase('FooBarBaz'), ['Foo', 'Bar', 'Baz'];
-  fromPascalCase('Foo'), ['Foo'];
-  fromPascalCase(''), [''];
+  (fromPascalCase('FooBarBaz'), ['Foo', 'Bar', 'Baz']);
+  (fromPascalCase('Foo'), ['Foo']);
+  (fromPascalCase(''), ['']);
 
   toPascalCase(['Foo', 'Bar', 'Baz']) === 'FooBarBaz';
   toPascalCase(['foo', 'bAr', 'bAZ']) === 'FooBarBaz';
@@ -43,9 +43,9 @@ import {
 }
 
 {
-  fromSnakeCase('foo_bar_baz'), ['foo', 'bar', 'baz'];
-  fromSnakeCase('foo'), ['foo'];
-  fromSnakeCase(''), [''];
+  (fromSnakeCase('foo_bar_baz'), ['foo', 'bar', 'baz']);
+  (fromSnakeCase('foo'), ['foo']);
+  (fromSnakeCase(''), ['']);
 
   toSnakeCase(['foo', 'bar', 'baz']) === 'foo_bar_baz';
   toSnakeCase(['Foo', 'bAr', 'bAZ']) === 'foo_bar_baz';
@@ -59,9 +59,9 @@ import {
 }
 
 {
-  fromKebabCase('foo-bar-baz'), ['foo', 'bar', 'baz'];
-  fromKebabCase('foo'), ['foo'];
-  fromKebabCase(''), [''];
+  (fromKebabCase('foo-bar-baz'), ['foo', 'bar', 'baz']);
+  (fromKebabCase('foo'), ['foo']);
+  (fromKebabCase(''), ['']);
 
   toKebabCase(['foo', 'bar', 'baz']) === 'foo-bar-baz';
   toKebabCase(['Foo', 'bAr', 'bAZ']) === 'foo-bar-baz';

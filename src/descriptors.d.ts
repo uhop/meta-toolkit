@@ -68,7 +68,6 @@ export interface DescriptorDict {
   [name: string | symbol]: PropertyDescriptor;
 }
 
-
 /**
  * Adds descriptors to an object defined by a dictionary.
  *

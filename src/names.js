@@ -2,10 +2,12 @@
 
 'use strict';
 
-export const capitalize = name => (name ? name[0].toUpperCase() + name.slice(1).toLowerCase() : name);
+export const capitalize = name =>
+  name ? name[0].toUpperCase() + name.slice(1).toLowerCase() : name;
 
 export const fromCamelCase = name => name.split(/(?=[A-Z])/g);
-export const toCamelCase = names => names.map((name, index) => (index ? capitalize(name) : name.toLowerCase())).join('');
+export const toCamelCase = names =>
+  names.map((name, index) => (index ? capitalize(name) : name.toLowerCase())).join('');
 
 export const fromPascalCase = name => name.split(/(?=[A-Z])/g);
 export const toPascalCase = names => names.map(name => capitalize(name)).join('');

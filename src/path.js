@@ -21,7 +21,8 @@ export const set = (object, path, value, {delimiter = '.', defaultValue} = {}) =
   }
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object] || (i + 1 < path.length && !(path[i] in object))) return defaultValue;
+    if (!object || !dereferable[typeof object] || (i + 1 < path.length && !(path[i] in object)))
+      return defaultValue;
     parent = object;
     object = object[path[i]];
   }
