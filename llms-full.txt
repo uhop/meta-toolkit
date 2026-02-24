@@ -1,0 +1,457 @@
+# meta-toolkit
+
+> A zero-dependency JavaScript toolkit for meta programming and OOP: name-casing conversions, property descriptor manipulation, aliases, prototype traversal, iterator helpers, deep path access, option merging, and comparator adapters.
+
+- NPM: https://npmjs.org/package/meta-toolkit
+- GitHub: https://github.com/uhop/meta-toolkit
+- Wiki: https://github.com/uhop/meta-toolkit/wiki
+- License: BSD-3-Clause
+- Runtime: Node.js, Bun, Deno, browsers
+- Module system: ESM (`"type": "module"`)
+- TypeScript: hand-written `.d.ts` declarations for all modules
+
+## Installation
+
+```bash
+npm install meta-toolkit
+```
+
+## Quick start
+
+```js
+import {fromKebabCase, toCamelCase, toPascalCase, toSnakeCase} from 'meta-toolkit/names.js';
+
+const parts = fromKebabCase('foo-bar-baz');
+console.log(toCamelCase(parts));  // 'fooBarBaz'
+console.log(toPascalCase(parts)); // 'FooBarBaz'
+console.log(toSnakeCase(parts));  // 'foo_bar_baz'
+```
+
+```js
+import {addAliases} from 'meta-toolkit/aliases.js';
+
+class Foo {
+  constructor() { this.value = 2; }
+  get double() { return this.value * 2; }
+  line(a, b) { return a * this.value + b; }
+}
+addAliases(Foo.prototype, {
+  double: 'x2, duplicate',
+  line: 'linear'
+});
+
+const f = new Foo();
+console.log(f.x2);         // 4
+console.log(f.linear(1, 2)); // 4
+```
+
+```js
+import {get, set, forceSet, remove} from 'meta-toolkit/path.js';
+
+const obj = {};
+forceSet(obj, 'a.b.c', 1); // obj = {a: {b: {c: 1}}}
+get(obj, 'a.b.c');          // 1
+set(obj, 'a.b.c', 2);      // obj = {a: {b: {c: 2}}}
+remove(obj, 'a.b.c');       // obj = {a: {b: {}}}
+```
+
+---
+
+## Module: Names (`meta-toolkit/names.js`)
+
+Name-casing conversions. All `from*` functions split a string into `string[]`. All `to*` functions join `string[]` into a string.
+
+```js
+import {capitalize, fromCamelCase, toCamelCase, fromPascalCase, toPascalCase,
+        fromSnakeCase, toSnakeCase, toAllCapsSnakeCase,
+        fromKebabCase, toKebabCase} from 'meta-toolkit/names.js';
+```
+
+### Functions
+
+- `capitalize(name: string): string` — capitalize first letter, lowercase rest.
+- `fromCamelCase(name: string): string[]` — split camelCase into parts.
+- `toCamelCase(names: string[]): string` — join parts as camelCase.
+- `fromPascalCase(name: string): string[]` — split PascalCase into parts.
+- `toPascalCase(names: string[]): string` — join parts as PascalCase.
+- `fromSnakeCase(name: string): string[]` — split snake_case into parts.
+- `toSnakeCase(names: string[]): string` — join parts as snake_case.
+- `toAllCapsSnakeCase(names: string[]): string` — join parts as UPPER_SNAKE_CASE.
+- `fromKebabCase(name: string): string[]` — split kebab-case into parts.
+- `toKebabCase(names: string[]): string` — join parts as kebab-case.
+
+### Example
+
+```js
+import {fromCamelCase, toKebabCase, toSnakeCase} from 'meta-toolkit/names.js';
+
+const parts = fromCamelCase('fooBarBaz');
+// parts = ['foo', 'Bar', 'Baz']
+
+toKebabCase(parts);  // 'foo-bar-baz'
+toSnakeCase(parts);  // 'foo-bar-baz' — note: parts are lowercased by toSnakeCase
+```
+
+---
+
+## Module: Descriptors (`meta-toolkit/descriptors.js`)
+
+Property descriptor creation and manipulation helpers.
+
+```js
+import {defaultDescriptor, makeGetter, makeSetter, makeAccessors,
+        addDescriptor, addDescriptors, addAccessor, addGetters,
+        copyDescriptors} from 'meta-toolkit/descriptors.js';
+```
+
+### Constants
+
+- `defaultDescriptor` — `{configurable: true, enumerable: false}`. Used as the default `initDescriptor` for descriptor factories.
+
+### Descriptor factories
+
+- `makeGetter(getter: () => any, initDescriptor?: PropertyDescriptor): PropertyDescriptor` — create a getter descriptor.
+- `makeSetter(setter: (value: any) => void, initDescriptor?: PropertyDescriptor): PropertyDescriptor` — create a setter descriptor.
+- `makeAccessors(getter: () => any, setter: (value: any) => void, initDescriptor?: PropertyDescriptor): PropertyDescriptor` — create a getter+setter descriptor.
+
+### Adding descriptors to objects
+
+- `addDescriptor(target: object, names: string | symbol | (string|symbol)[], descriptor: PropertyDescriptor, force?: boolean): object` — define a descriptor on target under one or more names. `names` can be a comma-separated string. Skips existing properties unless `force` is truthy.
+- `addDescriptors(target: object, dict: DescriptorDict, force?: boolean): object` — define multiple descriptors from a dictionary. Keys are comma-separated name strings or symbols; values are descriptors. Supports symbol keys.
+- `addAccessor(target: object, names: string | symbol | (string|symbol)[], getter: () => any, setter: (value: any) => void, force?: boolean): object` — shorthand for `addDescriptor` + `makeAccessors`.
+- `addGetters(target: object, dict: GetterDict, force?: boolean): object` — add multiple getters from a dictionary. Keys are comma-separated name strings; values are getter functions.
+
+### Copying descriptors
+
+- `copyDescriptors(target: object, source: object, names: string | symbol | (string|symbol)[] | AliasDict, force?: boolean): object` — copy descriptors from source to target. `names` can be:
+  - A string (comma-separated) or symbol or array — copies those descriptors as-is.
+  - An `AliasDict` object — keys are source property names, values are target alias names.
+
+### Types
+
+```ts
+interface DescriptorDict {
+  [name: string | symbol]: PropertyDescriptor;
+}
+interface GetterDict {
+  [name: string | symbol]: () => any;
+}
+interface AliasDict {
+  [name: string | symbol]: string | symbol | (string | symbol)[];
+}
+```
+
+### Example
+
+```js
+import {makeGetter, addDescriptor, addGetters} from 'meta-toolkit/descriptors.js';
+
+const obj = {_x: 10};
+addDescriptor(obj, 'x, getX', makeGetter(function() { return this._x; }));
+console.log(obj.x);    // 10
+console.log(obj.getX);  // 10
+
+addGetters(obj, {
+  'doubled, x2': function() { return this._x * 2; }
+});
+console.log(obj.doubled); // 20
+console.log(obj.x2);      // 20
+```
+
+---
+
+## Module: Aliases (`meta-toolkit/aliases.js`)
+
+Property aliasing built on `copyDescriptors` and `addDescriptor` from `descriptors.js`.
+
+```js
+import {addAlias, addAliases} from 'meta-toolkit/aliases.js';
+```
+
+### Functions
+
+- `addAlias(object: object, name: string | symbol, aliases: string | symbol | (string|symbol)[], force?: boolean): object` — alias a single property. Copies the property descriptor from `name` to each alias.
+- `addAliases(object: object, dict: string | symbol | (string|symbol)[] | AliasDict, force?: boolean): object` — alias multiple properties. Dict keys are source property names; values are alias names (comma-separated string, symbol, or array).
+
+### Example
+
+```js
+import {addAlias, addAliases} from 'meta-toolkit/aliases.js';
+
+class Queue {
+  enqueue(value) { /* ... */ }
+  dequeue() { /* ... */ }
+}
+
+addAlias(Queue.prototype, 'enqueue', 'push, add');
+addAliases(Queue.prototype, {dequeue: 'pop, remove'});
+
+// Now Queue instances have .push(), .add(), .pop(), .remove()
+```
+
+---
+
+## Module: Iterators (`meta-toolkit/iterators.js`)
+
+Iterator augmentation and lazy transformation helpers.
+
+```js
+import {augmentIterator, normalizeIterator, mapIterator, filterIterator} from 'meta-toolkit/iterators.js';
+```
+
+### Functions
+
+- `augmentIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — add `[Symbol.iterator]` returning `this` if not already present.
+- `normalizeIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — uses `Iterator.from()` if available (modern runtimes), otherwise falls back to `augmentIterator`.
+- `mapIterator<T, R>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => R): IterableIterator<R>` — lazy map. Uses native `iterator.map()` if available.
+- `filterIterator<T>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => boolean): IterableIterator<T>` — lazy filter. Uses native `iterator.filter()` if available.
+
+### Example
+
+```js
+import {mapIterator, filterIterator} from 'meta-toolkit/iterators.js';
+
+function* range(n) { for (let i = 0; i < n; ++i) yield i; }
+
+const doubled = mapIterator(range(5), x => x * 2);
+const evens = filterIterator(range(10), x => x % 2 === 0);
+
+for (const v of doubled) console.log(v); // 0, 2, 4, 6, 8
+for (const v of evens) console.log(v);   // 0, 2, 4, 6, 8
+```
+
+---
+
+## Module: Prototypes (`meta-toolkit/prototypes.js`)
+
+Prototype chain inspection utilities.
+
+```js
+import {prototypes, getPropertyDescriptor} from 'meta-toolkit/prototypes.js';
+```
+
+### Functions
+
+- `prototypes(object: object, skipSelf?: boolean): Generator<object>` — generator yielding each prototype in the chain, stopping before `Object.prototype`. If `skipSelf` is truthy, skips the first (own) object.
+- `getPropertyDescriptor(object: object, name: string | symbol): PropertyDescriptor | undefined` — like `Object.getOwnPropertyDescriptor` but walks the entire prototype chain.
+
+### Example
+
+```js
+import {prototypes, getPropertyDescriptor} from 'meta-toolkit/prototypes.js';
+
+class A { foo() {} }
+class B extends A { bar() {} }
+
+for (const proto of prototypes(new B())) {
+  console.log(Object.getOwnPropertyNames(proto));
+}
+// ['constructor', 'bar']
+// ['constructor', 'foo']
+
+const desc = getPropertyDescriptor(new B(), 'foo');
+console.log(typeof desc.value); // 'function'
+```
+
+---
+
+## Module: Path (`meta-toolkit/path.js`)
+
+Deep property access by dot-delimited string path or array of keys.
+
+```js
+import {get, set, forceSet, remove} from 'meta-toolkit/path.js';
+```
+
+### PathOptions
+
+```ts
+interface PathOptions {
+  delimiter?: string | RegExp;  // Default: '.'
+  defaultValue?: any;
+}
+```
+
+### Functions
+
+- `get(object: object, path: string | (string|symbol)[], options?: PathOptions): any` — get a nested value. Returns `options.defaultValue` if the path does not exist.
+- `set(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value. The path must already exist (intermediate objects are not created). Returns the previous value, or `options.defaultValue` if the path did not exist.
+- `forceSet(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value, creating intermediate empty objects `{}` as needed. Throws `TypeError` if the root object is not dereferenceable or the path is empty.
+- `remove(object: object, path: string | (string|symbol)[], options?: PathOptions): any` — delete a nested property. Returns the removed value, or `options.defaultValue` if the path did not exist.
+
+### Example
+
+```js
+import {get, set, forceSet, remove} from 'meta-toolkit/path.js';
+
+const config = {};
+forceSet(config, 'db.host', 'localhost');
+forceSet(config, 'db.port', 5432);
+// config = {db: {host: 'localhost', port: 5432}}
+
+get(config, 'db.host');              // 'localhost'
+get(config, 'db.user', {defaultValue: 'root'}); // 'root'
+
+set(config, 'db.port', 3306);
+remove(config, 'db.host');
+// config = {db: {port: 3306}}
+```
+
+---
+
+## Module: Options (`meta-toolkit/options.js`)
+
+Constructor option merging utility.
+
+```js
+import {copyOptions} from 'meta-toolkit/options.js';
+```
+
+### Functions
+
+- `copyOptions(target: object, defaults: object, ...sources: object[]): object` — merge defaults then sources into target. If `target` is null/undefined, a new object is created. First, all non-undefined values from `defaults` are copied to `target`. Then, for each source, only keys that exist in `defaults` are copied. Returns `target`.
+
+### Example
+
+```js
+import {copyOptions} from 'meta-toolkit/options.js';
+
+const defaults = {color: 'red', size: 10, visible: true};
+const userOpts = {size: 20, extra: 'ignored'};
+
+const result = copyOptions({}, defaults, userOpts);
+// result = {color: 'red', size: 20, visible: true}
+// 'extra' is ignored because it's not in defaults
+```
+
+---
+
+## Module: Comparators (`meta-toolkit/comparators.js`)
+
+Adapters between `less` (`(a, b) => boolean`), `compare` (`(a, b) => number`), and `equal` function styles.
+
+```js
+import {compareFromLess, lessFromCompare, equalFromLess,
+        reverseLess, reverseCompare} from 'meta-toolkit/comparators.js';
+```
+
+### Functions
+
+- `compareFromLess(lessFn: (a, b) => boolean): (a, b) => number` — adapt a less function to a compare function. Returns -1, 0, or 1.
+- `lessFromCompare(compareFn: (a, b) => number): (a, b) => boolean` — adapt a compare function to a less function.
+- `equalFromLess(lessFn: (a, b) => boolean): (a, b) => boolean` — derive equality: returns true if neither `less(a,b)` nor `less(b,a)`.
+- `reverseLess(lessFn: (a, b) => boolean): (a, b) => boolean` — reverse a less function (swaps arguments).
+- `reverseCompare(compareFn: (a, b) => number): (a, b) => number` — reverse a compare function (swaps arguments).
+
+### Example
+
+```js
+import {compareFromLess, reverseLess} from 'meta-toolkit/comparators.js';
+
+const less = (a, b) => a < b;
+const compare = compareFromLess(less);
+
+console.log(compare(1, 2));  // -1
+console.log(compare(2, 1));  //  1
+console.log(compare(1, 1));  //  0
+
+const descLess = reverseLess(less);
+console.log(descLess(1, 2)); // false
+console.log(descLess(2, 1)); // true
+
+[3, 1, 2].sort(compare);                        // [1, 2, 3]
+[3, 1, 2].sort(compareFromLess(descLess));       // [3, 2, 1]
+```
+
+---
+
+## Common patterns
+
+### Name conversion pipeline
+
+```js
+import {fromCamelCase, toKebabCase, toPascalCase, toSnakeCase} from 'meta-toolkit/names.js';
+
+const parts = fromCamelCase('myVariableName');
+console.log(toKebabCase(parts));   // 'my-variable-name'
+console.log(toPascalCase(parts));  // 'MyVariableName'
+console.log(toSnakeCase(parts));   // 'my_variable_name'
+```
+
+### Dynamic accessor generation
+
+```js
+import {addAccessor} from 'meta-toolkit/descriptors.js';
+
+class Point {
+  constructor(x, y) { this._x = x; this._y = y; }
+}
+
+addAccessor(Point.prototype, 'x',
+  function() { return this._x; },
+  function(v) { this._x = v; }
+);
+
+const p = new Point(1, 2);
+console.log(p.x); // 1
+p.x = 10;
+console.log(p.x); // 10
+```
+
+### Aliasing methods for API compatibility
+
+```js
+import {addAliases} from 'meta-toolkit/aliases.js';
+
+class Collection {
+  pushBack(value) { /* ... */ }
+  popFront() { /* ... */ }
+  getLength() { /* ... */ }
+}
+
+addAliases(Collection.prototype, {
+  pushBack: 'push, add, enqueue',
+  popFront: 'pop, remove, dequeue',
+  getLength: 'size, length'
+});
+```
+
+### Lazy iterator chaining
+
+```js
+import {mapIterator, filterIterator} from 'meta-toolkit/iterators.js';
+
+function* integers() { for (let i = 0; ; ++i) yield i; }
+
+// Lazy: nothing computed until iterated
+const pipeline = mapIterator(
+  filterIterator(integers(), n => n % 3 === 0),
+  n => n * n
+);
+
+// Take first 5
+let count = 0;
+for (const v of pipeline) {
+  console.log(v); // 0, 9, 36, 81, 144
+  if (++count >= 5) break;
+}
+```
+
+### Deep configuration management
+
+```js
+import {get, forceSet, remove} from 'meta-toolkit/path.js';
+
+const config = {};
+forceSet(config, 'server.host', '0.0.0.0');
+forceSet(config, 'server.port', 8080);
+forceSet(config, 'db.connection.host', 'localhost');
+forceSet(config, 'db.connection.port', 5432);
+
+console.log(get(config, 'server'));
+// {host: '0.0.0.0', port: 8080}
+
+remove(config, 'db.connection.port');
+console.log(get(config, 'db.connection'));
+// {host: 'localhost'}
+```

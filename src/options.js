@@ -1,7 +1,5 @@
 // @ts-self-types="./options.d.ts"
 
-'use strict';
-
 export const copyOptions = (target, defaults, ...sources) => {
   target = target || {};
   const keys = Object.keys(defaults);

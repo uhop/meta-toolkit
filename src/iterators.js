@@ -1,7 +1,5 @@
 // @ts-self-types="./iterators.d.ts"
 
-'use strict';
-
 export const augmentIterator = iterator => {
   if (!iterator.hasOwnProperty(Symbol.iterator)) {
     iterator[Symbol.iterator] = function () {

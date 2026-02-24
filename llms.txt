@@ -1,0 +1,132 @@
+# meta-toolkit
+
+> Zero-dependency JavaScript toolkit for meta programming and OOP: name-casing conversions, property descriptor manipulation, aliases, prototype traversal, iterators, deep path access, option merging, and comparator adapters.
+
+- NPM: https://npmjs.org/package/meta-toolkit
+- GitHub: https://github.com/uhop/meta-toolkit
+- Wiki: https://github.com/uhop/meta-toolkit/wiki
+- License: BSD-3-Clause
+
+## Install
+
+```bash
+npm install meta-toolkit
+```
+
+## Quick start
+
+```js
+import {fromKebabCase, toCamelCase, toPascalCase} from 'meta-toolkit/names.js';
+
+const parts = fromKebabCase('foo-bar-baz');
+console.log(toCamelCase(parts));  // 'fooBarBaz'
+console.log(toPascalCase(parts)); // 'FooBarBaz'
+```
+
+```js
+import {addAliases} from 'meta-toolkit/aliases.js';
+
+class Foo {
+  greet() { return 'hello'; }
+}
+addAliases(Foo.prototype, {greet: 'hi, sayHello'});
+
+new Foo().hi(); // 'hello'
+```
+
+```js
+import {get, set, forceSet} from 'meta-toolkit/path.js';
+
+const obj = {};
+forceSet(obj, 'a.b.c', 42); // obj = {a: {b: {c: 42}}}
+get(obj, 'a.b.c');           // 42
+```
+
+## Modules
+
+### Names (`meta-toolkit/names.js`)
+
+Name-casing conversions between compound name formats.
+
+- **capitalize(name)** — capitalize first letter, lowercase rest.
+- **fromCamelCase(name)** / **toCamelCase(names)** — split/join camelCase.
+- **fromPascalCase(name)** / **toPascalCase(names)** — split/join PascalCase.
+- **fromSnakeCase(name)** / **toSnakeCase(names)** — split/join snake_case.
+- **toAllCapsSnakeCase(names)** — join as UPPER_SNAKE_CASE.
+- **fromKebabCase(name)** / **toKebabCase(names)** — split/join kebab-case.
+
+### Descriptors (`meta-toolkit/descriptors.js`)
+
+Property descriptor creation and manipulation.
+
+- **makeGetter(getter, initDescriptor?)** — create a getter descriptor.
+- **makeSetter(setter, initDescriptor?)** — create a setter descriptor.
+- **makeAccessors(getter, setter, initDescriptor?)** — create a getter+setter descriptor.
+- **addDescriptor(target, names, descriptor, force?)** — define a descriptor on target.
+- **addDescriptors(target, dict, force?)** — define multiple descriptors from a dictionary.
+- **addAccessor(target, names, getter, setter, force?)** — add a getter+setter.
+- **addGetters(target, dict, force?)** — add multiple getters from a dictionary.
+- **copyDescriptors(target, source, names, force?)** — copy descriptors between objects.
+
+### Aliases (`meta-toolkit/aliases.js`)
+
+Property aliasing built on descriptors.
+
+- **addAlias(object, name, aliases, force?)** — alias a single property.
+- **addAliases(object, dict, force?)** — alias multiple properties via a dictionary.
+
+### Iterators (`meta-toolkit/iterators.js`)
+
+Iterator augmentation and transformation helpers.
+
+- **augmentIterator(iterator)** — add `[Symbol.iterator]` if missing.
+- **normalizeIterator(iterator)** — normalize using `Iterator.from()` when available, otherwise `augmentIterator`.
+- **mapIterator(iterator, callbackFn)** — lazy map over an iterable.
+- **filterIterator(iterator, callbackFn)** — lazy filter over an iterable.
+
+### Prototypes (`meta-toolkit/prototypes.js`)
+
+Prototype chain inspection.
+
+- **prototypes(object, skipSelf?)** — generator yielding each prototype up to (excluding) `Object.prototype`.
+- **getPropertyDescriptor(object, name)** — like `getOwnPropertyDescriptor` but walks the prototype chain.
+
+### Path (`meta-toolkit/path.js`)
+
+Deep property access by dot-delimited path or array of keys.
+
+- **get(object, path, options?)** — get a nested value.
+- **set(object, path, value, options?)** — set a nested value (path must exist).
+- **forceSet(object, path, value, options?)** — set a nested value, creating intermediate objects as needed.
+- **remove(object, path, options?)** — delete a nested property.
+
+Options: `{delimiter, defaultValue}`.
+
+### Options (`meta-toolkit/options.js`)
+
+Constructor option merging.
+
+- **copyOptions(target, defaults, ...sources)** — merge defaults then sources into target. Only keys present in `defaults` are copied from sources.
+
+### Comparators (`meta-toolkit/comparators.js`)
+
+Adapters between `less`, `compare`, and `equal` function styles.
+
+- **compareFromLess(lessFn)** — adapt `(a,b) => bool` to `(a,b) => number`.
+- **lessFromCompare(compareFn)** — adapt `(a,b) => number` to `(a,b) => bool`.
+- **equalFromLess(lessFn)** — derive equality from a less function.
+- **reverseLess(lessFn)** — reverse a less function.
+- **reverseCompare(compareFn)** — reverse a compare function.
+
+## Key concepts
+
+- **ESM-only** — `"type": "module"`.
+- **Zero dependencies** — no runtime deps; only devDependencies for testing.
+- **TypeScript** — hand-written `.d.ts` declarations for all modules.
+- **Subpath exports** — import via `meta-toolkit/<module>.js` (wildcard `./*` → `./src/*`).
+
+## Links
+
+- Docs: https://github.com/uhop/meta-toolkit/wiki
+- npm: https://www.npmjs.com/package/meta-toolkit
+- Full LLM reference: https://github.com/uhop/meta-toolkit/blob/master/llms-full.txt

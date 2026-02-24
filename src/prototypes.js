@@ -1,7 +1,5 @@
 // @ts-self-types="./prototypes.d.ts"
 
-'use strict';
-
 export function* prototypes(object, skipSelf) {
   while (object && object !== Object.prototype) {
     if (skipSelf) {

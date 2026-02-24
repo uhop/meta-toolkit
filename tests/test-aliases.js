@@ -1,5 +1,3 @@
-'use strict';
-
 import test from 'tape-six';
 
 import {addAlias, addAliases} from '../src/aliases.js';

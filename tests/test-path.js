@@ -1,5 +1,3 @@
-'use strict';
-
 import test from 'tape-six';
 
 import {get, set, remove, forceSet} from '../src/path.js';

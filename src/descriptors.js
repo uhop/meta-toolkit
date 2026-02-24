@@ -1,7 +1,5 @@
 // @ts-self-types="./descriptors.d.ts"
 
-'use strict';
-
 export const defaultDescriptor = {configurable: true, enumerable: false};
 
 export const makeGetter = (getter, initDescriptor = defaultDescriptor) => {

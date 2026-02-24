@@ -1,5 +1,3 @@
-'use strict';
-
 import test from 'tape-six';
 
 import {prototypes, getPropertyDescriptor} from '../src/prototypes.js';
