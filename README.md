@@ -9,7 +9,7 @@ helping to generate classes, objects, prototypes, iterators, and more.
 
 - Name mangling (`meta-toolkit/names.js`) provides a conversion from compound names
   such as `foo-bar` to `['foo', 'bar']` and from `['foo', 'bar']` to `fooBar` and vice versa.
-  - Used to generated file names, method names, and so on.
+  - Used to generate file names, method names, and so on.
   - The following naming schemas are supported out of box:
     - `camelCase` &mdash; `toCamelCase()`, `fromCamelCase()`.
     - `PascalCase` &mdash; `toPascalCase()`, `fromPascalCase()`.
@@ -20,6 +20,7 @@ helping to generate classes, objects, prototypes, iterators, and more.
   various accessors dynamically and share them between different objects/prototypes:
   - Create descriptors &mdash; `makeGetter()`, `makeSetter()`, `makeAccessors()`.
   - Add descriptors &mdash; `addDescriptor()`, `addDescriptors()`, `addAccessor()`, `addGetters()`.
+  - `defaultDescriptor` &mdash; the default descriptor template.
   - Copy descriptors &mdash; `copyDescriptors()`.
 - Aliases (`meta-toolkit/aliases.js`) provides a set of helpers to alias existing properties:
   - Alias properties &mdash; `addAlias()`, `addAliases()`.
@@ -27,12 +28,13 @@ helping to generate classes, objects, prototypes, iterators, and more.
   - Iterate over prototypes &mdash; `prototypes()`.
   - `getPropertyDescriptor()` &mdash; similar to `getOwnPropertyDescriptor()`, but for all prototypes
     not just the current object.
-- Iterators (`meta-toolkit/iterators.js`) provides a set of helpers simplify creating custom iterators:
+- Iterators (`meta-toolkit/iterators.js`) provides a set of helpers to simplify creating custom iterators:
   - Augment iterable with an iterator interface &mdash; `augmentIterator()`, `normalizeIterator()`.
   - Add array-like methods if not present &mdash; `mapIterator()`, `filterIterator()`.
-- Path (`meta-toolkit/path.js`) provides a set of helpers to work with embedded objects in a simple way:
-  - Get value from a nested object by path &mdash; `get()`.
-  - Set value in a nested object by path &mdash; `set()`.
+- Path (`meta-toolkit/path.js`) provides a set of helpers to work with nested objects using paths:
+  - Get a value from a nested object by path &mdash; `get()`.
+  - Set a value in a nested object by path &mdash; `set()`, `forceSet()`.
+  - Remove a value from a nested object by path &mdash; `remove()`.
 - Options (`meta-toolkit/options.js`) provides a set of helpers to organize options for constructors:
   - Copy options according to some defaults &mdash; `copyOptions()`.
 - Comparators (`meta-toolkit/comparators.js`) provides a set of helpers to convert between different
@@ -86,7 +88,8 @@ addAliases(Foo.prototype, {
   line: 'linear'
 });
 
-const f = new Foo(2);
+const f = new Foo();
+f.value = 2;
 
 console.log(f.double); // 4
 console.log(f.x2); // 4
@@ -106,7 +109,7 @@ get(object, 'a.b.c'); // 1
 get(object, 'a'); // {b: {c: 1}}
 
 set(object, 'a.b.c', 2); // object = {a: {b: {c: 2}}}
-set(object, 'a.b.d', 3); // object = {a: {b: {c: 2, d: 3}}}
+forceSet(object, 'a.b.d', 3); // object = {a: {b: {c: 2, d: 3}}}
 
 remove(object, 'a.b.c'); // object = {a: {b: {d: 3}}}
 remove(object, 'a.b'); // object = {a: {}}
