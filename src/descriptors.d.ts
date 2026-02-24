@@ -27,7 +27,7 @@ export function makeGetter(
 export function makeSetter(
   setter: (value: any) => void,
   initDescriptor?: PropertyDescriptor = defaultDescriptor
-): PropertyDecorator;
+): PropertyDescriptor;
 
 /**
  * Creates a getter and setter descriptor.
