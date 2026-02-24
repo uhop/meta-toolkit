@@ -1,5 +1,3 @@
-'use strict';
-
 import {get, set, remove, forceSet} from '../src/path.js';
 
 {

@@ -1,5 +1,3 @@
-'use strict';
-
 import {addAlias, addAliases} from '../src/aliases.js';
 
 {

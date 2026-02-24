@@ -1,5 +1,3 @@
-'use strict';
-
 import {augmentIterator, normalizeIterator, mapIterator, filterIterator} from '../src/iterators.js';
 
 const range = (from: number, to: number): Iterator<number> => {

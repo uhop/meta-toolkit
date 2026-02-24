@@ -1,5 +1,3 @@
-'use strict';
-
 import {copyOptions} from '../src/options.js';
 
 {

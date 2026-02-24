@@ -1,5 +1,3 @@
-'use strict';
-
 import {prototypes, getPropertyDescriptor} from '../src/prototypes.js';
 
 class Foo {
