@@ -111,6 +111,11 @@ test('Descriptors: addGetters()', t => {
   t.equal(target.foo, 42);
   t.equal(target.bar, 33);
   t.equal(target.baz, 33);
+
+  const sym = Symbol('sym');
+  const target2 = {};
+  addGetters(target2, {[sym]: () => 99});
+  t.equal(target2[sym], 99);
 });
 
 test('Descriptors: copyDescriptors()', t => {
