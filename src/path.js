@@ -2,6 +2,16 @@
 
 const dereferable = {object: 1, function: 1};
 
+/**
+ * Gets a value from an object by path.
+ *
+ * @param {object} object the object to get from
+ * @param {string|(string|symbol)[]} path dot-delimited string or array of keys
+ * @param {object} [options] options
+ * @param {string} [options.delimiter='.'] the delimiter for string paths
+ * @param {any} [options.defaultValue] value returned if the path does not exist
+ * @returns {any} the value at the given path, or defaultValue
+ */
 export const get = (object, path, {delimiter = '.', defaultValue} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
@@ -13,6 +23,17 @@ export const get = (object, path, {delimiter = '.', defaultValue} = {}) => {
   return object;
 };
 
+/**
+ * Sets a value in an object by path. The path must already exist.
+ *
+ * @param {object} object the object to set a value in
+ * @param {string|(string|symbol)[]} path dot-delimited string or array of keys
+ * @param {any} value the value to set
+ * @param {object} [options] options
+ * @param {string} [options.delimiter='.'] the delimiter for string paths
+ * @param {any} [options.defaultValue] value returned if the path does not exist
+ * @returns {any} the previous value, or defaultValue if the path did not exist
+ */
 export const set = (object, path, value, {delimiter = '.', defaultValue} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
@@ -29,6 +50,17 @@ export const set = (object, path, value, {delimiter = '.', defaultValue} = {}) =
   return object;
 };
 
+/**
+ * Sets a value in an object by path, creating intermediate objects as needed.
+ *
+ * @param {object} object the object to set a value in
+ * @param {string|(string|symbol)[]} path dot-delimited string or array of keys
+ * @param {any} value the value to set
+ * @param {object} [options] options
+ * @param {string} [options.delimiter='.'] the delimiter for string paths
+ * @returns {any} the previous value at the path
+ * @throws {TypeError} if the root object is not dereferenceable or the path is empty
+ */
 export const forceSet = (object, path, value, {delimiter = '.'} = {}) => {
   if (!object || !dereferable[typeof object]) throw new TypeError('Invalid object');
   if (typeof path == 'string') {
@@ -47,6 +79,16 @@ export const forceSet = (object, path, value, {delimiter = '.'} = {}) => {
   return object;
 };
 
+/**
+ * Removes a value from an object by path.
+ *
+ * @param {object} object the object to remove a value from
+ * @param {string|(string|symbol)[]} path dot-delimited string or array of keys
+ * @param {object} [options] options
+ * @param {string} [options.delimiter='.'] the delimiter for string paths
+ * @param {any} [options.defaultValue] value returned if the path does not exist
+ * @returns {any} the removed value, or defaultValue if the path did not exist
+ */
 export const remove = (object, path, {delimiter = '.', defaultValue} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);

@@ -1,5 +1,13 @@
 // @ts-self-types="./options.d.ts"
 
+/**
+ * Merges defaults with custom sources. Only keys present in defaults are copied from sources.
+ *
+ * @param {object} target the target object; if null/undefined a new object is created
+ * @param {object} defaults the default options — copied to target first, skipping undefined values
+ * @param {...object} sources objects to merge into target; only keys defined in defaults are copied
+ * @returns {object} the target object
+ */
 export const copyOptions = (target, defaults, ...sources) => {
   target = target || {};
   const keys = Object.keys(defaults);
