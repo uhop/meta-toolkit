@@ -89,7 +89,7 @@ const parts = fromCamelCase('fooBarBaz');
 // parts = ['foo', 'Bar', 'Baz']
 
 toKebabCase(parts);  // 'foo-bar-baz'
-toSnakeCase(parts);  // 'foo-bar-baz' — note: parts are lowercased by toSnakeCase
+toSnakeCase(parts);  // 'foo_bar_baz' — note: parts are lowercased by toSnakeCase
 ```
 
 ---
