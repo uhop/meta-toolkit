@@ -1,6 +1,6 @@
 {
   "name": "meta-toolkit",
-  "description": "Toolkit to help with meta programming and OOP",
+  "description": "Zero-dependency toolkit for meta programming and OOP: name-casing conversions, property descriptors, aliases, prototype traversal, iterators, deep path access, option merging, and comparator adapters",
   "version": "1.1.6",
   "type": "module",
   "main": "./src/aliases.js",
@@ -33,14 +33,31 @@
   "homepage": "https://github.com/uhop/meta-toolkit#readme",
   "keywords": [
     "meta",
+    "metaprogramming",
     "oop",
-    "programming",
-    "toolkit"
+    "toolkit",
+    "utility",
+    "descriptors",
+    "property-descriptors",
+    "aliases",
+    "prototypes",
+    "iterators",
+    "naming-convention",
+    "camelCase",
+    "snake_case",
+    "kebab-case",
+    "deep-path",
+    "comparators",
+    "options",
+    "zero-dependency",
+    "esm"
   ],
   "author": "Eugene Lazutkin <eugene.lazutkin@gmail.com> (http://www.lazutkin.com/)",
   "license": "BSD-3-Clause",
   "files": [
-    "/src"
+    "/src",
+    "llms.txt",
+    "llms-full.txt"
   ],
   "tape6": {
     "tests": [
