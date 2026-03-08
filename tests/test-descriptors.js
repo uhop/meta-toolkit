@@ -118,6 +118,15 @@ test('Descriptors: addGetters()', t => {
   t.equal(target2[sym], 99);
 });
 
+test('Descriptors: addDescriptors() with symbol keys', t => {
+  const sym = Symbol('s');
+  const target = {};
+
+  addDescriptors(target, {foo: makeGetter(() => 1), [sym]: makeGetter(() => 2)});
+  t.equal(target.foo, 1);
+  t.equal(target[sym], 2);
+});
+
 test('Descriptors: copyDescriptors()', t => {
   const target = {foo: 42};
   const source = {
@@ -137,4 +146,40 @@ test('Descriptors: copyDescriptors()', t => {
   t.equal(target.bar, 33);
   t.equal(target.baz, 99);
   t.equal(target.quux(), 1001);
+});
+
+test('Descriptors: copyDescriptors() with AliasDict', t => {
+  const source = {
+    foo: 1,
+    get bar() {
+      return 2;
+    }
+  };
+  const target = {};
+
+  copyDescriptors(target, source, {foo: 'f1, f2', bar: 'b'});
+  t.equal(target.f1, 1);
+  t.equal(target.f2, 1);
+  t.equal(target.b, 2);
+});
+
+test('Descriptors: copyDescriptors() with symbol names', t => {
+  const sym = Symbol('s');
+  const source = {[sym]: 42, foo: 1};
+  const target = {};
+
+  copyDescriptors(target, source, [sym, 'foo']);
+  t.equal(target[sym], 42);
+  t.equal(target.foo, 1);
+});
+
+test('Descriptors: copyDescriptors() with force', t => {
+  const source = {foo: 99};
+  const target = {foo: 1};
+
+  copyDescriptors(target, source, 'foo');
+  t.equal(target.foo, 1);
+
+  copyDescriptors(target, source, 'foo', true);
+  t.equal(target.foo, 99);
 });

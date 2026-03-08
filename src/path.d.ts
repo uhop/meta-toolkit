@@ -35,7 +35,7 @@ export function get(
  * @param options an object with options. Supported options are:
  *                - delimiter: the delimiter to use. Defaults to '.'.
  *                - defaultValue: the default value to return if the path does not exist.
- * @returns the value that was set, or the value at the given path if the path already existed.
+ * @returns the previous value at the path, or options.defaultValue if the path did not exist.
  */
 export function set(
   object: object,
@@ -53,7 +53,7 @@ export function set(
  * @param value the value to set.
  * @param options an object with options. Supported options are:
  *                - delimiter: the delimiter to use. Defaults to '.'.
- * @returns the value that was set.
+ * @returns the previous value at the path.
  * @remarks The path is created if it does not exist by creating empty objects `{}` as needed.
  */
 export function forceSet(

@@ -59,7 +59,7 @@ export const addDescriptor = (target, names, descriptor, force) => {
   if (typeof names == 'string') names = names.trim().split(/\s*,\s*/);
   if (!Array.isArray(names)) names = [names];
   for (const name of names) {
-    if (!force && target.hasOwnProperty(name)) continue;
+    if (!force && Object.hasOwn(target, name)) continue;
     Object.defineProperty(target, name, descriptor);
   }
   return target;

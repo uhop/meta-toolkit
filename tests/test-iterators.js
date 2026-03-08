@@ -44,3 +44,23 @@ test('Iterators: filterIterator()', t => {
 
   t.deepEqual([...filtered], [0, 2]);
 });
+
+test('Iterators: augmentIterator() idempotency', t => {
+  const iterator = range(0, 3);
+  const augmented = augmentIterator(iterator);
+  const fn = augmented[Symbol.iterator];
+
+  augmentIterator(augmented);
+  t.equal(augmented[Symbol.iterator], fn);
+});
+
+test('Iterators: augmentIterator() skips already-iterable', t => {
+  const original = function () {
+    return this;
+  };
+  const iterator = range(0, 3);
+  iterator[Symbol.iterator] = original;
+
+  augmentIterator(iterator);
+  t.equal(iterator[Symbol.iterator], original);
+});

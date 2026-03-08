@@ -26,7 +26,7 @@ export function equalFromLess(lessFn: (a: any, b: any) => boolean): (a: any, b: 
  * Reverses a less function.
  *
  * @param lessFn a function that returns true if the first argument is less than the second
- * @returns a function that returns true if the first argument is greater or equal than the second
+ * @returns a function that returns true if the first argument is greater than the second
  */
 export function reverseLess(lessFn: (a: any, b: any) => boolean): (a: any, b: any) => boolean;
 

@@ -246,6 +246,7 @@ class B extends A { bar() {} }
 for (const proto of prototypes(new B())) {
   console.log(Object.getOwnPropertyNames(proto));
 }
+// []
 // ['constructor', 'bar']
 // ['constructor', 'foo']
 

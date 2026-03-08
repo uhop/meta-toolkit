@@ -30,3 +30,26 @@ test('Path', t => {
 
   t.deepEqual(remove(object, 'a'), {b: {c: 3}});
 });
+
+test('Path: forceSet() errors', t => {
+  t.throws(() => forceSet(null, 'a', 1));
+  t.throws(() => forceSet(42, 'a', 1));
+  t.throws(() => forceSet({}, [], 1));
+});
+
+test('Path: set() with non-existent path', t => {
+  const nothing = Symbol();
+  const object = {a: {b: 1}};
+
+  t.equal(set(object, 'a.c.d', 2, {defaultValue: nothing}), nothing);
+  t.equal(set(object, 'x.y', 2, {defaultValue: nothing}), nothing);
+  t.deepEqual(object, {a: {b: 1}});
+});
+
+test('Path: remove() edge cases', t => {
+  const nothing = Symbol();
+
+  t.equal(remove({}, 'a.b', {defaultValue: nothing}), nothing);
+  t.equal(remove({a: 1}, 'a.b', {defaultValue: nothing}), nothing);
+  t.equal(remove({}, '', {defaultValue: nothing}), nothing);
+});

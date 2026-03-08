@@ -29,7 +29,7 @@ export function normalizeIterator<T = any>(iterator: Iterator<T>): IterableItera
 export function mapIterator<T = any, R = any>(
   iterator: Iterable<T>,
   callbackFn: (value: T, index: number) => R
-): IterableIterator<R>;
+): Iterable<R>;
 
 /**
  * Filters values from an iterable object to new values.
@@ -46,4 +46,4 @@ export function mapIterator<T = any, R = any>(
 export function filterIterator<T = any>(
   iterator: Iterable<T>,
   callbackFn: (value: T, index: number) => boolean
-): IterableIterator<T>;
+): Iterable<T>;
