@@ -22,7 +22,7 @@ interface PathOptions {
 export function get(
   object: object,
   path: string | (string | symbol)[],
-  options?: PathOptions = {delimiter = '.'}
+  options?: PathOptions
 ): any;
 
 /**
@@ -41,7 +41,7 @@ export function set(
   object: object,
   path: string | (string | symbol)[],
   value: any,
-  options?: PathOptions = {delimiter = '.'}
+  options?: PathOptions
 ): any;
 
 /**
@@ -60,7 +60,7 @@ export function forceSet(
   object: object,
   path: string | (string | symbol)[],
   value: any,
-  options?: PathOptions = {delimiter = '.'}
+  options?: PathOptions
 ): any;
 
 /**
@@ -78,5 +78,5 @@ export function forceSet(
 export function remove(
   object: object,
   path: string | (string | symbol)[],
-  options?: PathOptions = {delimiter = '.'}
+  options?: PathOptions
 ): any;

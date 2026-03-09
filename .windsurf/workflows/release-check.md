@@ -22,8 +22,10 @@ Run through this checklist before publishing a new version.
    // turbo
 10. Run the full test suite: `npm test`
     // turbo
-11. Run TypeScript type checking: `npm run ts-check`
+11. Run TypeScript typing tests: `npm run ts-test`
     // turbo
-12. Run lint: `npm run lint`
+12. Run TypeScript type checking: `npm run ts-check`
     // turbo
-13. Dry-run publish to verify package contents: `npm pack --dry-run`
+13. Run lint: `npm run lint`
+    // turbo
+14. Dry-run publish to verify package contents: `npm pack --dry-run`

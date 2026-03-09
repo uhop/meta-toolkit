@@ -15,7 +15,7 @@ Follow these steps when adding a new public module.
 3. Create `tests/test-<name>.js` with automated tests (tape-six).
    // turbo
 4. Run the new test: `node tests/test-<name>.js`
-5. Create `ts-check/test-<name>.ts` with TypeScript type-checking tests.
+5. Create `tests/test-types-<name>.ts` with TypeScript typing tests.
 
 ## Wiring
 
@@ -36,4 +36,6 @@ Follow these steps when adding a new public module.
 
 13. Run the full test suite: `npm test`
     // turbo
-14. Run TypeScript type checking: `npm run ts-check`
+14. Run TypeScript typing tests: `npm run ts-test`
+    // turbo
+15. Run TypeScript type checking: `npm run ts-check`

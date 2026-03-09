@@ -3,9 +3,9 @@
 [npm-img]: https://img.shields.io/npm/v/meta-toolkit.svg
 [npm-url]: https://npmjs.org/package/meta-toolkit
 
-Meta toolkit is a toolkit to help with meta programming and OOP. It is a no-dependency,
-no-nonsense collection of small bits my projects accumulated over the years. They deal with
-helping to generate classes, objects, prototypes, iterators, and more.
+Meta toolkit is a no-dependency, no-nonsense collection of small utilities for meta programming
+and OOP that my projects accumulated over the years: generating classes, objects, prototypes,
+iterators, and more.
 
 - Name mangling (`meta-toolkit/names.js`) provides a conversion from compound names
   such as `foo-bar` to `['foo', 'bar']` and from `['foo', 'bar']` to `fooBar` and vice versa.
@@ -16,29 +16,28 @@ helping to generate classes, objects, prototypes, iterators, and more.
     - `snake_case` &mdash; `toSnakeCase()`, `fromSnakeCase()`.
       - `SNAKE_CASE` &mdash; `toAllCapsSnakeCase()`.
     - `kebab-case` &mdash; `toKebabCase()`, `fromKebabCase()`.
-- Descriptor manipulation (`meta-toolkit/descriptors.js`) provides a set of helpers used to generate
-  various accessors dynamically and share them between different objects/prototypes:
+- Descriptor manipulation (`meta-toolkit/descriptors.js`) — generate accessors dynamically
+  and share them between objects/prototypes:
   - Create descriptors &mdash; `makeGetter()`, `makeSetter()`, `makeAccessors()`.
   - Add descriptors &mdash; `addDescriptor()`, `addDescriptors()`, `addAccessor()`, `addGetters()`.
   - `defaultDescriptor` &mdash; the default descriptor template.
   - Copy descriptors &mdash; `copyDescriptors()`.
-- Aliases (`meta-toolkit/aliases.js`) provides a set of helpers to alias existing properties:
+- Aliases (`meta-toolkit/aliases.js`) — alias existing properties:
   - Alias properties &mdash; `addAlias()`, `addAliases()`.
-- Prototypes (`meta-toolkit/prototypes.js`) provides a set of helpers to inspect prototypes:
+- Prototypes (`meta-toolkit/prototypes.js`) — inspect prototypes:
   - Iterate over prototypes &mdash; `prototypes()`.
   - `getPropertyDescriptor()` &mdash; similar to `getOwnPropertyDescriptor()`, but for all prototypes
     not just the current object.
-- Iterators (`meta-toolkit/iterators.js`) provides a set of helpers to simplify creating custom iterators:
+- Iterators (`meta-toolkit/iterators.js`) — simplify creating custom iterators:
   - Augment iterable with an iterator interface &mdash; `augmentIterator()`, `normalizeIterator()`.
   - Add array-like methods if not present &mdash; `mapIterator()`, `filterIterator()`.
-- Path (`meta-toolkit/path.js`) provides a set of helpers to work with nested objects using paths:
+- Path (`meta-toolkit/path.js`) — work with nested objects using paths:
   - Get a value from a nested object by path &mdash; `get()`.
   - Set a value in a nested object by path &mdash; `set()`, `forceSet()`.
   - Remove a value from a nested object by path &mdash; `remove()`.
-- Options (`meta-toolkit/options.js`) provides a set of helpers to organize options for constructors:
+- Options (`meta-toolkit/options.js`) — organize options for constructors:
   - Copy options according to some defaults &mdash; `copyOptions()`.
-- Comparators (`meta-toolkit/comparators.js`) provides a set of helpers to convert between different
-  types of comparator functions:
+- Comparators (`meta-toolkit/comparators.js`) — convert between different comparator function styles:
   - Create a compare function from a less function and vice versa &mdash; `compareFromLess()`,
     `lessFromCompare()`.
   - Create an equality function from a less function &mdash; `equalFromLess()`.

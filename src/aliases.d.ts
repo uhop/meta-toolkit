@@ -1,4 +1,4 @@
-import type {AliasDict} from './descriptors';
+import type {AliasDict} from './descriptors.js';
 
 /**
  * Adds one or more aliases for a property of an object.

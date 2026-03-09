@@ -1,7 +1,7 @@
 /**
  * Default descriptors for getters and setters: `{configurable: true, enumerable: false}`
  */
-export const defaultDescriptor = {configurable: true, enumerable: false};
+export const defaultDescriptor: {readonly configurable: true; readonly enumerable: false};
 
 /**
  * Creates a getter descriptor.
@@ -13,7 +13,7 @@ export const defaultDescriptor = {configurable: true, enumerable: false};
  */
 export function makeGetter(
   getter: () => any,
-  initDescriptor?: PropertyDescriptor = defaultDescriptor
+  initDescriptor?: PropertyDescriptor
 ): PropertyDescriptor;
 
 /**
@@ -26,7 +26,7 @@ export function makeGetter(
  */
 export function makeSetter(
   setter: (value: any) => void,
-  initDescriptor?: PropertyDescriptor = defaultDescriptor
+  initDescriptor?: PropertyDescriptor
 ): PropertyDescriptor;
 
 /**
@@ -41,7 +41,7 @@ export function makeSetter(
 export function makeAccessors(
   getter: () => any,
   setter: (value: any) => void,
-  initDescriptor?: PropertyDescriptor = defaultDescriptor
+  initDescriptor?: PropertyDescriptor
 ): PropertyDescriptor;
 
 /**

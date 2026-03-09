@@ -1,6 +1,6 @@
 # Architecture
 
-`meta-toolkit` is a pure JavaScript (ESM) library providing utilities for meta programming and OOP. It has **zero runtime dependencies** — only dev dependencies for testing and type-checking.
+`meta-toolkit` is a pure JavaScript (ESM) library with utilities for meta programming and OOP. **Zero runtime dependencies** — only dev dependencies for testing and type-checking.
 
 ## Project layout
 
@@ -16,7 +16,6 @@ src/                      # All source code (ESM, shipped via npm)
 └── comparators.js / .d.ts # Comparator function adapters (less ↔ compare ↔ equal)
 # Every .js module has a co-located .d.ts file providing TypeScript declarations.
 tests/                    # Automated tests (tape-six framework)
-ts-check/                 # TypeScript type-checking test files
 wiki/                     # GitHub wiki documentation (git submodule)
 ```
 
@@ -71,13 +70,15 @@ Most modules are independent. The only internal dependency is `aliases.js` → `
 ## Testing
 
 - **Framework**: [tape-six](https://github.com/uhop/tape-six)
-- **Run all**: `npm test` (parallel workers)
+- **Run all**: `npm test` (parallel workers, Node)
 - **Run single file**: `node tests/test-<name>.js`
 - **Run with Bun**: `npm run test:bun`
 - **Run with Deno**: `npm run test:deno`
+- **Run sequentially**: `npm run test:seq` (no workers, useful for debugging)
+- **TS typing tests**: `npm run ts-test` (tape-six, Node)
 - **Type checking**: `npm run ts-check` (runs `tsc --noEmit`)
 - **Linting**: `npm run lint` (Prettier check), `npm run lint:fix` (auto-format)
-- **Test files**: `tests/test-*.js`
+- **Test files**: `tests/test-*.js`, `tests/test-types-*.ts`
 
 ## Import paths
 

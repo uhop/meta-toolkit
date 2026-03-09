@@ -2,8 +2,7 @@
 
 > `meta-toolkit` is a zero-dependency ESM JavaScript library for meta programming and OOP: name-casing conversions, property descriptors, aliases, prototype traversal, iterators, deep path access, option merging, and comparator adapters. Works in Node.js, Bun, Deno, and browsers.
 
-For project structure, core concepts, and the module dependency graph see [ARCHITECTURE.md](./ARCHITECTURE.md).
-For detailed usage docs and API references see the [wiki](https://github.com/uhop/meta-toolkit/wiki).
+For project structure, core concepts, and the module dependency graph see [ARCHITECTURE.md](./ARCHITECTURE.md). For API references see the [wiki](https://github.com/uhop/meta-toolkit/wiki).
 
 ## Setup
 
@@ -15,12 +14,17 @@ npm install
 
 ## Verification commands
 
-- `npm test` — run the full test suite (tape-six)
+- `npm test` — run the full test suite (tape-six, Node)
 - `node tests/test-<name>.js` — run a single test file directly
 - `npm run test:bun` — run with Bun
 - `npm run test:deno` — run with Deno
+- `npm run test:seq` — run sequentially (no workers, useful for debugging)
+- `npm run ts-test` — run TypeScript typing tests (tape-six, Node)
+- `npm run ts-test:bun` — run TS typing tests with Bun
+- `npm run ts-test:deno` — run TS typing tests with Deno
 - `npm run ts-check` — TypeScript type checking (tsc --noEmit)
 - `npm run lint` — Prettier format check
+- `npm run lint:fix` — Prettier auto-format
 
 ## Critical rules
 
@@ -51,7 +55,7 @@ npm install
 
 - Source: `src/<name>.js` + `src/<name>.d.ts`
 - Tests: `tests/test-<name>.js`
-- TS type checks: `ts-check/test-<name>.ts`
+- TS typing tests: `tests/test-types-<name>.ts`
 - Wiki docs: `wiki/` (git submodule)
 
 ## When reading the codebase

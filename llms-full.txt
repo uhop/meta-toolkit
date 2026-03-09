@@ -203,8 +203,8 @@ import {augmentIterator, normalizeIterator, mapIterator, filterIterator} from 'm
 
 - `augmentIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — add `[Symbol.iterator]` returning `this` if not already present.
 - `normalizeIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — uses `Iterator.from()` if available (modern runtimes), otherwise falls back to `augmentIterator`.
-- `mapIterator<T, R>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => R): IterableIterator<R>` — lazy map. Uses native `iterator.map()` if available.
-- `filterIterator<T>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => boolean): IterableIterator<T>` — lazy filter. Uses native `iterator.filter()` if available.
+- `mapIterator<T, R>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => R): Iterable<R>` — lazy map. Uses native `iterator.map()` if available.
+- `filterIterator<T>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => boolean): Iterable<T>` — lazy filter. Uses native `iterator.filter()` if available.
 
 ### Example
 
