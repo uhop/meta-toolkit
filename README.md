@@ -120,6 +120,7 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
+- 1.1.8 _Added TS typing tests, CJS test. Fixed `.d.ts` typings for strict mode. Improved docs and workflows. Updated dev dependencies._
 - 1.1.7 _Added JSDoc to all source files. Fixed `addGetters()` bug with symbol keys. Improved docs. Added AI-friendly project files._
 - 1.1.6 _Updated dev dependencies._
 - 1.1.5 _Updated dev dependencies._

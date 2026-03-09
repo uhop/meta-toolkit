@@ -22,11 +22,18 @@ test('Types: descriptors — defaultDescriptor shape', t => {
 test('Types: descriptors — descriptor factories', t => {
   const g: PropertyDescriptor = makeGetter(() => 42);
   const s: PropertyDescriptor = makeSetter((_v: any) => {});
-  const a: PropertyDescriptor = makeAccessors(() => 42, (_v: any) => {});
+  const a: PropertyDescriptor = makeAccessors(
+    () => 42,
+    (_v: any) => {}
+  );
 
   const g2: PropertyDescriptor = makeGetter(() => 42, {enumerable: true});
   const s2: PropertyDescriptor = makeSetter((_v: any) => {}, {enumerable: true});
-  const a2: PropertyDescriptor = makeAccessors(() => 42, (_v: any) => {}, {enumerable: true});
+  const a2: PropertyDescriptor = makeAccessors(
+    () => 42,
+    (_v: any) => {},
+    {enumerable: true}
+  );
   t.pass();
 });
 
@@ -47,8 +54,19 @@ test('Types: descriptors — addDescriptors with DescriptorDict', t => {
 });
 
 test('Types: descriptors — addAccessor signature', t => {
-  const r: object = addAccessor({}, 'x', () => 1, (_v: any) => {});
-  const r2: object = addAccessor({}, ['x', 'y'], () => 1, (_v: any) => {}, true);
+  const r: object = addAccessor(
+    {},
+    'x',
+    () => 1,
+    (_v: any) => {}
+  );
+  const r2: object = addAccessor(
+    {},
+    ['x', 'y'],
+    () => 1,
+    (_v: any) => {},
+    true
+  );
   t.pass();
 });
 

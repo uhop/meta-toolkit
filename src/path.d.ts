@@ -19,11 +19,7 @@ interface PathOptions {
  *                - defaultValue: the default value to return if the path does not exist.
  * @returns the value at the given path, or options.defaultValue if the path does not exist.
  */
-export function get(
-  object: object,
-  path: string | (string | symbol)[],
-  options?: PathOptions
-): any;
+export function get(object: object, path: string | (string | symbol)[], options?: PathOptions): any;
 
 /**
  * Sets a value in an object by path.
