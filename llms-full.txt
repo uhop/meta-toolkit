@@ -119,7 +119,15 @@ import {defaultDescriptor, makeGetter, makeSetter, makeAccessors,
 - `addDescriptor(target: object, names: string | symbol | (string|symbol)[], descriptor: PropertyDescriptor, force?: boolean): object` — define a descriptor on target under one or more names. `names` can be a comma-separated string. Skips existing properties unless `force` is truthy.
 - `addDescriptors(target: object, dict: DescriptorDict, force?: boolean): object` — define multiple descriptors from a dictionary. Keys are comma-separated name strings or symbols; values are descriptors. Supports symbol keys.
 - `addAccessor(target: object, names: string | symbol | (string|symbol)[], getter: () => any, setter: (value: any) => void, force?: boolean): object` — shorthand for `addDescriptor` + `makeAccessors`.
+- `addGetter(target: object, names: string | symbol | (string|symbol)[], getter: () => any, force?: boolean): object` — singular counterpart of `addGetters`. Adds a single getter under one or more names.
 - `addGetters(target: object, dict: GetterDict, force?: boolean): object` — add multiple getters from a dictionary. Keys are comma-separated name strings; values are getter functions.
+
+### Class-prototype-aware sugar
+
+- `addProtoGetter(Class: {prototype: object}, names: string | symbol | (string|symbol)[], getter: () => any, force?: boolean): object` — equivalent to `addGetter(Class.prototype, names, getter, force)`. Returns the prototype.
+- `addProtoGetters(Class: {prototype: object}, dict: GetterDict, force?: boolean): object` — equivalent to `addGetters(Class.prototype, dict, force)`. Returns the prototype.
+
+Use these when the call site is targeting a class's prototype, so the code reads `Foo` instead of `Foo.prototype`.
 
 ### Copying descriptors
 
@@ -173,10 +181,15 @@ import {addAlias, addAliases} from 'meta-toolkit/aliases.js';
 - `addAlias(object: object, name: string | symbol, aliases: string | symbol | (string|symbol)[], force?: boolean): object` — alias a single property. Copies the property descriptor from `name` to each alias.
 - `addAliases(object: object, dict: string | symbol | (string|symbol)[] | AliasDict, force?: boolean): object` — alias multiple properties. Dict keys are source property names; values are alias names (comma-separated string, symbol, or array).
 
+### Class-prototype-aware sugar
+
+- `addProtoAlias(Class: {prototype: object}, name: string | symbol, aliases: string | symbol | (string|symbol)[], force?: boolean): object` — equivalent to `addAlias(Class.prototype, name, aliases, force)`. Returns the prototype.
+- `addProtoAliases(Class: {prototype: object}, dict: string | symbol | (string|symbol)[] | AliasDict, force?: boolean): object` — equivalent to `addAliases(Class.prototype, dict, force)`. Returns the prototype.
+
 ### Example
 
 ```js
-import {addAlias, addAliases} from 'meta-toolkit/aliases.js';
+import {addAlias, addAliases, addProtoAliases} from 'meta-toolkit/aliases.js';
 
 class Queue {
   enqueue(value) { /* ... */ }
@@ -186,7 +199,14 @@ class Queue {
 addAlias(Queue.prototype, 'enqueue', 'push, add');
 addAliases(Queue.prototype, {dequeue: 'pop, remove'});
 
-// Now Queue instances have .push(), .add(), .pop(), .remove()
+// Same with prototype-aware sugar (no `.prototype` at the call site):
+class Stack {
+  push(value) { /* ... */ }
+  pop() { /* ... */ }
+}
+addProtoAliases(Stack, {push: 'add, enqueue', pop: 'remove, dequeue'});
+
+// Now Queue and Stack instances have synonymous methods.
 ```
 
 ---
@@ -279,6 +299,10 @@ interface PathOptions {
 - `set(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value. The path must already exist (intermediate objects are not created). Returns the previous value, or `options.defaultValue` if the path did not exist.
 - `forceSet(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value, creating intermediate empty objects `{}` as needed. Throws `TypeError` if the root object is not dereferenceable or the path is empty.
 - `remove(object: object, path: string | (string|symbol)[], options?: PathOptions): any` — delete a nested property. Returns the removed value, or `options.defaultValue` if the path did not exist.
+
+### Path safety
+
+These functions walk user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). If your application passes externally-sourced paths (HTTP request bodies, configuration files, or other untrusted input) directly to these functions, validate them at the application boundary first — the library does not. The trust boundary is the caller; library users are responsible for input sanitization.
 
 ### Example
 

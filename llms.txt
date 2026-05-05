@@ -65,7 +65,10 @@ Property descriptor creation and manipulation.
 - **addDescriptor(target, names, descriptor, force?)** — define a descriptor on target.
 - **addDescriptors(target, dict, force?)** — define multiple descriptors from a dictionary.
 - **addAccessor(target, names, getter, setter, force?)** — add a getter+setter.
+- **addGetter(target, names, getter, force?)** — add a single getter.
 - **addGetters(target, dict, force?)** — add multiple getters from a dictionary.
+- **addProtoGetter(Class, names, getter, force?)** — add a getter on `Class.prototype` (sugar).
+- **addProtoGetters(Class, dict, force?)** — add multiple getters on `Class.prototype` (sugar).
 - **copyDescriptors(target, source, names, force?)** — copy descriptors between objects.
 
 ### Aliases (`meta-toolkit/aliases.js`)
@@ -74,6 +77,8 @@ Property aliasing built on descriptors.
 
 - **addAlias(object, name, aliases, force?)** — alias a single property.
 - **addAliases(object, dict, force?)** — alias multiple properties via a dictionary.
+- **addProtoAlias(Class, name, aliases, force?)** — alias a property on `Class.prototype` (sugar).
+- **addProtoAliases(Class, dict, force?)** — alias multiple properties on `Class.prototype` (sugar).
 
 ### Iterators (`meta-toolkit/iterators.js`)
 
@@ -101,6 +106,10 @@ Deep property access by dot-delimited path or array of keys.
 - **remove(object, path, options?)** — delete a nested property.
 
 Options: `{delimiter, defaultValue}`.
+
+**Path safety**: these functions walk user-supplied keys without sanitizing magic property names
+(`__proto__`, `constructor`, `prototype`). If you pass externally-sourced paths, validate at the
+application boundary first — the library does not.
 
 ### Options (`meta-toolkit/options.js`)
 

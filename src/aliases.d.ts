@@ -31,3 +31,35 @@ export function addAliases(
   dict: string | symbol | (string | symbol)[] | AliasDict,
   force?: boolean
 ): object;
+
+/**
+ * Adds one or more aliases for a property on a class's prototype.
+ * Sugar for `addAlias(Class.prototype, name, aliases, force)`.
+ *
+ * @param Class the class whose prototype owns the property to alias
+ * @param name name or symbol of the property to alias
+ * @param aliases name(s) to use as aliases. It can be a symbol, an array of strings or symbols, or a comma-separated string of names.
+ * @param force if truthy, then the alias will be added even if it is already there
+ * @returns the prototype object
+ */
+export function addProtoAlias(
+  Class: {prototype: object},
+  name: string | symbol,
+  aliases: string | symbol | (string | symbol)[],
+  force?: boolean
+): object;
+
+/**
+ * Adds multiple aliases for multiple properties on a class's prototype.
+ * Sugar for `addAliases(Class.prototype, dict, force)`.
+ *
+ * @param Class the class whose prototype owns the properties to alias
+ * @param dict dictionary where the keys are the names of the properties to alias and the values are the aliases.
+ * @param force if truthy, then the alias will be added even if it is already there
+ * @returns the prototype object
+ */
+export function addProtoAliases(
+  Class: {prototype: object},
+  dict: string | symbol | (string | symbol)[] | AliasDict,
+  force?: boolean
+): object;

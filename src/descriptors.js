@@ -40,6 +40,9 @@ export const addDescriptors = (target, dict, force) => {
 export const addAccessor = (target, names, getter, setter, force) =>
   addDescriptor(target, names, makeAccessors(getter, setter), force);
 
+export const addGetter = (target, names, getter, force) =>
+  addDescriptor(target, names, makeGetter(getter), force);
+
 export const addGetters = (target, dict, force) => {
   for (const [names, getter] of Object.entries(dict)) {
     addDescriptor(target, names, makeGetter(getter), force);
@@ -51,6 +54,11 @@ export const addGetters = (target, dict, force) => {
   }
   return target;
 };
+
+export const addProtoGetter = (Class, names, getter, force) =>
+  addGetter(Class.prototype, names, getter, force);
+
+export const addProtoGetters = (Class, dict, force) => addGetters(Class.prototype, dict, force);
 
 export const copyDescriptors = (target, source, names, force) => {
   switch (typeof names) {

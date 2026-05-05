@@ -97,6 +97,22 @@ export function addAccessor(
 ): object;
 
 /**
+ * Adds a getter to an object under one or more names.
+ *
+ * @param target the object to add the getter to.
+ * @param names a string (a comma-separated list of names), symbol, or an array of strings and symbols that denotes the name of the getter.
+ * @param getter a function with no arguments that returns a value.
+ * @param force if truthy, the getter will be added even if it already exists in the target.
+ * @returns the target object.
+ */
+export function addGetter(
+  target: object,
+  names: string | symbol | (string | symbol)[],
+  getter: () => any,
+  force?: boolean
+): object;
+
+/**
  * A dictionary that defines getters with their names.
  */
 export interface GetterDict {
@@ -113,6 +129,38 @@ export interface GetterDict {
  * @returns the target object.
  */
 export function addGetters(target: object, dict: GetterDict, force?: boolean): object;
+
+/**
+ * Adds a getter to a class's prototype under one or more names.
+ * Sugar for `addGetter(Class.prototype, names, getter, force)`.
+ *
+ * @param Class the class whose prototype will receive the getter.
+ * @param names a string (a comma-separated list of names), symbol, or an array of strings and symbols that denotes the name of the getter.
+ * @param getter a function with no arguments that returns a value.
+ * @param force if truthy, the getter will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoGetter(
+  Class: {prototype: object},
+  names: string | symbol | (string | symbol)[],
+  getter: () => any,
+  force?: boolean
+): object;
+
+/**
+ * Adds getters to a class's prototype defined by a dictionary.
+ * Sugar for `addGetters(Class.prototype, dict, force)`.
+ *
+ * @param Class the class whose prototype will receive the getters.
+ * @param dict a dictionary {@link GetterDict} where the keys are the names of the getters to add and the values are the getters.
+ * @param force if truthy, the getter will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoGetters(
+  Class: {prototype: object},
+  dict: GetterDict,
+  force?: boolean
+): object;
 
 /**
  * A dictionary that defines aliases with their names.
