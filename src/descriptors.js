@@ -16,7 +16,7 @@ export const makeAccessors = (getter, setter, initDescriptor = defaultDescriptor
 
 export const addDescriptor = (target, names, descriptor, force) => {
   if (!descriptor) return target;
-  if (typeof names == 'string') names = names.trim().split(/\s*,\s*/);
+  if (typeof names == 'string') names = names.split(',').map(s => s.trim());
   if (!Array.isArray(names)) names = [names];
   for (const name of names) {
     if (!force && Object.hasOwn(target, name)) continue;
@@ -55,7 +55,7 @@ export const addGetters = (target, dict, force) => {
 export const copyDescriptors = (target, source, names, force) => {
   switch (typeof names) {
     case 'string':
-      names = names.trim().split(/\s*,\s*/);
+      names = names.split(',').map(s => s.trim());
       break;
     case 'symbol':
       names = [names];

@@ -2,12 +2,15 @@
 
 const dereferable = {object: 1, function: 1};
 
+const unsafeKeys = new Set(['__proto__', 'constructor', 'prototype']);
+
 export const get = (object, path, {delimiter = '.', defaultValue = undefined} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object] || !(path[i] in object)) return defaultValue;
+    if (!object || !dereferable[typeof object] || unsafeKeys.has(path[i]) || !(path[i] in object))
+      return defaultValue;
     object = object[path[i]];
   }
   return object;
@@ -19,7 +22,12 @@ export const set = (object, path, value, {delimiter = '.', defaultValue = undefi
   }
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object] || (i + 1 < path.length && !(path[i] in object)))
+    if (
+      !object ||
+      !dereferable[typeof object] ||
+      unsafeKeys.has(path[i]) ||
+      (i + 1 < path.length && !(path[i] in object))
+    )
       return defaultValue;
     parent = object;
     object = object[path[i]];
@@ -34,6 +42,7 @@ export const forceSet = (object, path, value, {delimiter = '.'} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
+  if (path.some(name => unsafeKeys.has(name))) throw new TypeError('Unsafe path');
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
     if (!object || !dereferable[typeof object]) {
@@ -54,7 +63,8 @@ export const remove = (object, path, {delimiter = '.', defaultValue = undefined}
   if (!path.length) return defaultValue;
   let parent = null;
   for (let i = 0; i < path.length; ++i) {
-    if (!object || !dereferable[typeof object] || !(path[i] in object)) return defaultValue;
+    if (!object || !dereferable[typeof object] || unsafeKeys.has(path[i]) || !(path[i] in object))
+      return defaultValue;
     parent = object;
     object = object[path[i]];
   }
