@@ -114,6 +114,8 @@ remove(object, 'a.b.c'); // object = {a: {b: {d: 3}}}
 remove(object, 'a.b'); // object = {a: {}}
 ```
 
+> **Note on path safety.** `get()`, `set()`, `forceSet()`, and `remove()` walk user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). If you pass externally-sourced paths (e.g., from HTTP requests) directly to these functions, validate them at your application boundary first — the library does not.
+
 ## License
 
 BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.

@@ -33,6 +33,7 @@ npm install
 - **Hand-written `.d.ts` files.** They are NOT generated. When modifying a public API, update both the `.js` and `.d.ts` files.
 - **Do not modify or delete test expectations** without understanding why they changed.
 - **Do not add comments or remove comments** unless explicitly asked.
+- **Trust boundary is the caller.** `path.js` (`get`/`set`/`forceSet`/`remove`) walks user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). Callers passing externally-sourced paths must validate them — the library does not.
 
 ## Code style
 
