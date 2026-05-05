@@ -122,6 +122,7 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
+- 1.2.0 _Added `addProtoAlias`/`addProtoAliases`/`addProtoGetter`/`addProtoGetters`/`addGetter`. Updated dev dependencies._
 - 1.1.9 _Updated dev dependencies._
 - 1.1.8 _Added TS typing tests, CJS test. Fixed `.d.ts` typings for strict mode. Improved docs and workflows. Updated dev dependencies._
 - 1.1.7 _Added JSDoc to all source files. Fixed `addGetters()` bug with symbol keys. Improved docs. Added AI-friendly project files._
@@ -133,3 +134,5 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 - 1.1.1 _Updated deps._
 - 1.1.0 _Added comparator utilities._
 - 1.0.0 _Initial release._
+
+The full release notes are in the wiki: [Release notes](https://github.com/uhop/meta-toolkit/wiki/Release-notes).

@@ -27,11 +27,11 @@ The `names.js` module converts between compound name formats. All `from*` functi
 
 ### Property descriptors
 
-The `descriptors.js` module provides factories (`makeGetter`, `makeSetter`, `makeAccessors`) and installers (`addDescriptor`, `addDescriptors`, `addAccessor`, `addGetters`, `copyDescriptors`) for working with property descriptors. Names can be specified as comma-separated strings, symbols, or arrays — enabling multiple aliases in a single call.
+The `descriptors.js` module provides factories (`makeGetter`, `makeSetter`, `makeAccessors`) and installers (`addDescriptor`, `addDescriptors`, `addAccessor`, `addGetter`, `addGetters`, `copyDescriptors`) for working with property descriptors. Names can be specified as comma-separated strings, symbols, or arrays — enabling multiple aliases in a single call. Class-prototype-aware sugar (`addProtoGetter`, `addProtoGetters`) targets `Class.prototype` so call sites read `Foo` instead of `Foo.prototype`.
 
 ### Aliases
 
-The `aliases.js` module is a thin wrapper around `descriptors.js`. `addAlias` copies a single property's descriptor to new names. `addAliases` copies multiple properties via a dictionary.
+The `aliases.js` module is a thin wrapper around `descriptors.js`. `addAlias` copies a single property's descriptor to new names. `addAliases` copies multiple properties via a dictionary. `addProtoAlias` and `addProtoAliases` are class-prototype-aware sugar.
 
 ### Iterators
 
@@ -44,6 +44,8 @@ The `prototypes.js` module provides a `prototypes()` generator for walking the p
 ### Path
 
 The `path.js` module provides `get`, `set`, `forceSet`, and `remove` for deep property access using dot-delimited string paths or arrays of keys. `forceSet` creates intermediate objects as needed.
+
+**Trust boundary**: these functions walk user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). Callers passing externally-sourced paths are responsible for validation at the application boundary.
 
 ### Options
 
