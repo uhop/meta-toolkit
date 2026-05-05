@@ -16,4 +16,5 @@ export const getPropertyDescriptor = (object, name) => {
     const descriptor = Object.getOwnPropertyDescriptor(proto, name);
     if (descriptor) return descriptor;
   }
+  return undefined;
 };

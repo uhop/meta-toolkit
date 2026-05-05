@@ -2,7 +2,7 @@
 
 const dereferable = {object: 1, function: 1};
 
-export const get = (object, path, {delimiter = '.', defaultValue} = {}) => {
+export const get = (object, path, {delimiter = '.', defaultValue = undefined} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
@@ -13,7 +13,7 @@ export const get = (object, path, {delimiter = '.', defaultValue} = {}) => {
   return object;
 };
 
-export const set = (object, path, value, {delimiter = '.', defaultValue} = {}) => {
+export const set = (object, path, value, {delimiter = '.', defaultValue = undefined} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }
@@ -47,7 +47,7 @@ export const forceSet = (object, path, value, {delimiter = '.'} = {}) => {
   return object;
 };
 
-export const remove = (object, path, {delimiter = '.', defaultValue} = {}) => {
+export const remove = (object, path, {delimiter = '.', defaultValue = undefined} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);
   }

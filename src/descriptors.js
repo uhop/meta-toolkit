@@ -2,24 +2,17 @@
 
 export const defaultDescriptor = {configurable: true, enumerable: false};
 
-export const makeGetter = (getter, initDescriptor = defaultDescriptor) => {
-  const descriptor = {...initDescriptor};
-  if (typeof getter == 'function') descriptor.get = getter;
-  return descriptor;
-};
+export const makeGetter = (getter, initDescriptor = defaultDescriptor) =>
+  typeof getter == 'function' ? {...initDescriptor, get: getter} : {...initDescriptor};
 
-export const makeSetter = (setter, initDescriptor = defaultDescriptor) => {
-  const descriptor = {...initDescriptor};
-  if (typeof setter == 'function') descriptor.set = setter;
-  return descriptor;
-};
+export const makeSetter = (setter, initDescriptor = defaultDescriptor) =>
+  typeof setter == 'function' ? {...initDescriptor, set: setter} : {...initDescriptor};
 
-export const makeAccessors = (getter, setter, initDescriptor = defaultDescriptor) => {
-  const descriptor = {...initDescriptor};
-  if (typeof getter == 'function') descriptor.get = getter;
-  if (typeof setter == 'function') descriptor.set = setter;
-  return descriptor;
-};
+export const makeAccessors = (getter, setter, initDescriptor = defaultDescriptor) => ({
+  ...initDescriptor,
+  ...(typeof getter == 'function' && {get: getter}),
+  ...(typeof setter == 'function' && {set: setter})
+});
 
 export const addDescriptor = (target, names, descriptor, force) => {
   if (!descriptor) return target;

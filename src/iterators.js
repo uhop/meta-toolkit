@@ -11,7 +11,7 @@ export const augmentIterator = iterator => {
 
 let normalizeIterator = augmentIterator;
 if (typeof globalThis.Iterator?.from == 'function') {
-  normalizeIterator = iterator => Iterator.from(iterator);
+  normalizeIterator = iterator => globalThis.Iterator.from(iterator);
 }
 export {normalizeIterator};
 

@@ -4,7 +4,7 @@ export const compareFromLess = lessFn => (a, b) => (lessFn(a, b) ? -1 : lessFn(b
 
 export const lessFromCompare = compareFn => (a, b) => compareFn(a, b) < 0;
 
-export const equalFromLess = lessFn => (a, b) => !(Boolean(lessFn(a, b)) ^ Boolean(lessFn(b, a)));
+export const equalFromLess = lessFn => (a, b) => Boolean(lessFn(a, b)) === Boolean(lessFn(b, a));
 
 export const reverseLess = lessFn => (a, b) => lessFn(b, a);
 
