@@ -1,7 +1,7 @@
 // @ts-self-types="./iterators.d.ts"
 
 export const augmentIterator = iterator => {
-  if (!iterator.hasOwnProperty(Symbol.iterator)) {
+  if (!Object.hasOwn(iterator, Symbol.iterator)) {
     iterator[Symbol.iterator] = function () {
       return this;
     };
@@ -9,44 +9,47 @@ export const augmentIterator = iterator => {
   return iterator;
 };
 
-let normalizeIterator = augmentIterator;
-if (typeof globalThis.Iterator?.from == 'function') {
-  normalizeIterator = iterator => globalThis.Iterator.from(iterator);
-}
-export {normalizeIterator};
+const nativeIterator = typeof globalThis.Iterator?.from == 'function' ? globalThis.Iterator : null;
 
-export const mapIterator = (iterator, callbackFn) => {
-  if (typeof iterator?.map == 'function') return iterator.map(callbackFn);
-  return {
-    [Symbol.iterator]: () => {
-      const it = iterator[Symbol.iterator]();
-      let index = 0;
-      return normalizeIterator({
-        next: () => {
-          const result = it.next();
-          if (result.done) return result;
-          return {value: callbackFn(result.value, index++)};
-        }
-      });
+export const normalizeIterator = nativeIterator
+  ? iterator => nativeIterator.from(iterator)
+  : augmentIterator;
+
+const toIterator = iterable =>
+  typeof iterable?.[Symbol.iterator] == 'function' ? iterable[Symbol.iterator]() : iterable;
+
+export const mapIterator = (iterable, callbackFn) => {
+  const it = toIterator(iterable);
+  if (nativeIterator) return nativeIterator.from(it).map(callbackFn);
+  let index = 0;
+  return augmentIterator({
+    next: () => {
+      const result = it.next();
+      if (result.done) return result;
+      return {done: false, value: callbackFn(result.value, index++)};
+    },
+    return: value => {
+      it.return?.(value);
+      return {done: true, value};
     }
-  };
+  });
 };
 
-export const filterIterator = (iterator, callbackFn) => {
-  if (typeof iterator?.filter == 'function') return iterator.filter(callbackFn);
-  return {
-    [Symbol.iterator]: () => {
-      const it = iterator[Symbol.iterator]();
-      let index = 0;
-      return normalizeIterator({
-        next: () => {
-          for (;;) {
-            const result = it.next();
-            if (result.done) return result;
-            if (callbackFn(result.value, index++)) return result;
-          }
-        }
-      });
+export const filterIterator = (iterable, callbackFn) => {
+  const it = toIterator(iterable);
+  if (nativeIterator) return nativeIterator.from(it).filter(callbackFn);
+  let index = 0;
+  return augmentIterator({
+    next: () => {
+      for (;;) {
+        const result = it.next();
+        if (result.done) return result;
+        if (callbackFn(result.value, index++)) return result;
+      }
+    },
+    return: value => {
+      it.return?.(value);
+      return {done: true, value};
     }
-  };
+  });
 };

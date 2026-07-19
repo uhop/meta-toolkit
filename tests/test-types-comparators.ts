@@ -4,6 +4,7 @@ import {
   compareFromLess,
   lessFromCompare,
   equalFromLess,
+  equalFromCompare,
   reverseLess,
   reverseCompare
 } from '../src/comparators.js';
@@ -20,6 +21,20 @@ test('Types: comparators — lessFromCompare', t => {
 
 test('Types: comparators — equalFromLess', t => {
   const fn: (a: any, b: any) => boolean = equalFromLess((a, b) => a < b);
+  t.pass();
+});
+
+test('Types: comparators — equalFromCompare', t => {
+  const fn: (a: any, b: any) => boolean = equalFromCompare((a, b) => a - b);
+  t.pass();
+});
+
+test('Types: comparators — generics propagate', t => {
+  const cmp: (a: number, b: number) => number = compareFromLess((a: number, b: number) => a < b);
+  const less: (a: string, b: string) => boolean = lessFromCompare((a: string, b: string) =>
+    a.localeCompare(b)
+  );
+  const eq: (a: number, b: number) => boolean = equalFromCompare((a: number, b: number) => a - b);
   t.pass();
 });
 

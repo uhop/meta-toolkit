@@ -8,7 +8,7 @@ export const fromCamelCase = name => name.split(/(?=[A-Z])/g);
 export const toCamelCase = names =>
   names.map((name, index) => (index ? capitalize(name) : name.toLowerCase())).join('');
 
-export const fromPascalCase = name => name.split(/(?=[A-Z])/g);
+export const fromPascalCase = fromCamelCase;
 
 export const toPascalCase = names => names.map(name => capitalize(name)).join('');
 
@@ -21,3 +21,9 @@ export const toAllCapsSnakeCase = names => names.map(name => name.toUpperCase())
 export const fromKebabCase = name => name.split('-');
 
 export const toKebabCase = names => names.map(name => name.toLowerCase()).join('-');
+
+export const fromWords = name => name.split(/\s+/);
+
+export const toWords = names => names.map(name => name.toLowerCase()).join(' ');
+
+export const toTitleCase = names => names.map(name => capitalize(name)).join(' ');

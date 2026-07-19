@@ -34,6 +34,7 @@ npm install
 - **Do not modify or delete test expectations** without understanding why they changed.
 - **Comments are short _why_-markers only** — a non-trivial decision or constraint, or an algorithm reference; never narrate _what_ the code does. See [fleet slice 20](https://github.com/uhop/claude-config/blob/master/topics/no-narrating-comments.md).
 - **Trust boundary is the caller.** `path.js` (`get`/`set`/`forceSet`/`remove`) walks user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). Callers passing externally-sourced paths must validate them — the library does not.
+- **Quiet by default.** Helpers no-op or return `defaultValue`/`false` on absent input; only `forceSet` throws (no meaningful return exists). Keep new APIs on this rule.
 
 ## Code style
 

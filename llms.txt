@@ -54,21 +54,26 @@ Name-casing conversions between compound name formats.
 - **fromSnakeCase(name)** / **toSnakeCase(names)** — split/join snake_case.
 - **toAllCapsSnakeCase(names)** — join as UPPER_SNAKE_CASE.
 - **fromKebabCase(name)** / **toKebabCase(names)** — split/join kebab-case.
+- **fromWords(name)** / **toWords(names)** — split/join whitespace-separated words (join is lowercase).
+- **toTitleCase(names)** — join as space-separated capitalized words.
 
 ### Descriptors (`meta-toolkit/descriptors.js`)
 
 Property descriptor creation and manipulation.
 
+- **defaultDescriptor** — the default descriptor template `{configurable: true, enumerable: false}`.
 - **makeGetter(getter, initDescriptor?)** — create a getter descriptor.
 - **makeSetter(setter, initDescriptor?)** — create a setter descriptor.
 - **makeAccessors(getter, setter, initDescriptor?)** — create a getter+setter descriptor.
 - **addDescriptor(target, names, descriptor, force?)** — define a descriptor on target.
 - **addDescriptors(target, dict, force?)** — define multiple descriptors from a dictionary.
 - **addAccessor(target, names, getter, setter, force?)** — add a getter+setter.
+- **addAccessors(target, dict, force?)** — add multiple accessors from a dictionary of `{get, set}` pairs.
 - **addGetter(target, names, getter, force?)** — add a single getter.
 - **addGetters(target, dict, force?)** — add multiple getters from a dictionary.
-- **addProtoGetter(Class, names, getter, force?)** — add a getter on `Class.prototype` (sugar).
-- **addProtoGetters(Class, dict, force?)** — add multiple getters on `Class.prototype` (sugar).
+- **addSetter(target, names, setter, force?)** — add a single setter.
+- **addSetters(target, dict, force?)** — add multiple setters from a dictionary.
+- **addProtoDescriptor/addProtoDescriptors/addProtoAccessor/addProtoAccessors/addProtoGetter/addProtoGetters/addProtoSetter/addProtoSetters(Class, ...)** — the same installers targeting `Class.prototype` (sugar).
 - **copyDescriptors(target, source, names, force?)** — copy descriptors between objects.
 
 ### Aliases (`meta-toolkit/aliases.js`)
@@ -85,9 +90,9 @@ Property aliasing built on descriptors.
 Iterator augmentation and transformation helpers.
 
 - **augmentIterator(iterator)** — add `[Symbol.iterator]` if missing.
-- **normalizeIterator(iterator)** — normalize using `Iterator.from()` when available, otherwise `augmentIterator`.
-- **mapIterator(iterator, callbackFn)** — lazy map over an iterable.
-- **filterIterator(iterator, callbackFn)** — lazy filter over an iterable.
+- **normalizeIterator(iterator)** — normalize using `Iterator.from()` when available, otherwise `augmentIterator`. On modern runtimes the result exposes the full native helper family (`take`, `drop`, `flatMap`, …).
+- **mapIterator(iterable, callbackFn)** — lazy map over an iterable or iterator; single-use result, forwards `return()`.
+- **filterIterator(iterable, callbackFn)** — lazy filter over an iterable or iterator; single-use result, forwards `return()`.
 
 ### Prototypes (`meta-toolkit/prototypes.js`)
 
@@ -101,7 +106,8 @@ Prototype chain inspection.
 Deep property access by dot-delimited path or array of keys.
 
 - **get(object, path, options?)** — get a nested value.
-- **set(object, path, value, options?)** — set a nested value (path must exist).
+- **has(object, path, options?)** — check that every path segment exists (distinguishes a missing path from an `undefined` value).
+- **set(object, path, value, options?)** — set a nested value (intermediate segments must exist; the final one is created).
 - **forceSet(object, path, value, options?)** — set a nested value, creating intermediate objects as needed.
 - **remove(object, path, options?)** — delete a nested property.
 
@@ -124,6 +130,7 @@ Adapters between `less`, `compare`, and `equal` function styles.
 - **compareFromLess(lessFn)** — adapt `(a,b) => bool` to `(a,b) => number`.
 - **lessFromCompare(compareFn)** — adapt `(a,b) => number` to `(a,b) => bool`.
 - **equalFromLess(lessFn)** — derive equality from a less function.
+- **equalFromCompare(compareFn)** — derive equality from a compare function.
 - **reverseLess(lessFn)** — reverse a less function.
 - **reverseCompare(compareFn)** — reverse a compare function.
 

@@ -97,6 +97,34 @@ export function addAccessor(
 ): object;
 
 /**
+ * A getter/setter pair. Either member can be omitted.
+ */
+export interface AccessorPair {
+  /** A function with no arguments that returns a value. */
+  get?: () => any;
+  /** A function with one argument that sets a value. */
+  set?: (value: any) => void;
+}
+
+/**
+ * A dictionary that defines accessors with their names.
+ */
+export interface AccessorDict {
+  /** A key is a name of a property (a symbol or a comma-separated list of names as a string) and a value is a getter/setter pair {@link AccessorPair}. */
+  [name: string | symbol]: AccessorPair;
+}
+
+/**
+ * Adds accessors (getter/setter pairs) to an object defined by a dictionary.
+ *
+ * @param target the object to add the accessors to.
+ * @param dict a dictionary {@link AccessorDict} where the keys are the names of the accessors to add and the values are getter/setter pairs.
+ * @param force if truthy, the accessor will be added even if it already exists in the target.
+ * @returns the target object.
+ */
+export function addAccessors(target: object, dict: AccessorDict, force?: boolean): object;
+
+/**
  * Adds a getter to an object under one or more names.
  *
  * @param target the object to add the getter to.
@@ -131,6 +159,106 @@ export interface GetterDict {
 export function addGetters(target: object, dict: GetterDict, force?: boolean): object;
 
 /**
+ * Adds a setter to an object under one or more names.
+ *
+ * @param target the object to add the setter to.
+ * @param names a string (a comma-separated list of names), symbol, or an array of strings and symbols that denotes the name of the setter.
+ * @param setter a function with one argument that sets a value.
+ * @param force if truthy, the setter will be added even if it already exists in the target.
+ * @returns the target object.
+ */
+export function addSetter(
+  target: object,
+  names: string | symbol | (string | symbol)[],
+  setter: (value: any) => void,
+  force?: boolean
+): object;
+
+/**
+ * A dictionary that defines setters with their names.
+ */
+export interface SetterDict {
+  /** A key is a name of a property (a symbol or a comma-separated list of names as a string) and a value is a setter function. */
+  [name: string | symbol]: (value: any) => void;
+}
+
+/**
+ * Adds setters to an object defined by a dictionary.
+ *
+ * @param target the object to add the setters to.
+ * @param dict a dictionary {@link SetterDict} where the keys are the names of the setters to add and the values are the setters.
+ * @param force if truthy, the setter will be added even if it already exists in the target.
+ * @returns the target object.
+ */
+export function addSetters(target: object, dict: SetterDict, force?: boolean): object;
+
+/**
+ * Adds a descriptor to a class's prototype under one or more names.
+ * Sugar for `addDescriptor(Class.prototype, names, descriptor, force)`.
+ *
+ * @param Class the class whose prototype will receive the descriptor.
+ * @param names a string (a comma-separated list of names), symbol, or an array of strings and symbols that denotes the name of the descriptor.
+ * @param descriptor the descriptor object.
+ * @param force if truthy, the descriptor will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoDescriptor(
+  Class: {prototype: object},
+  names: string | symbol | (string | symbol)[],
+  descriptor: PropertyDescriptor,
+  force?: boolean
+): object;
+
+/**
+ * Adds descriptors to a class's prototype defined by a dictionary.
+ * Sugar for `addDescriptors(Class.prototype, dict, force)`.
+ *
+ * @param Class the class whose prototype will receive the descriptors.
+ * @param dict a dictionary {@link DescriptorDict} where the keys are the names of the descriptors to add and the values are the descriptors.
+ * @param force if truthy, the descriptor will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoDescriptors(
+  Class: {prototype: object},
+  dict: DescriptorDict,
+  force?: boolean
+): object;
+
+/**
+ * Adds an accessor (getter and setter) to a class's prototype under one or more names.
+ * Sugar for `addAccessor(Class.prototype, names, getter, setter, force)`.
+ *
+ * @param Class the class whose prototype will receive the accessor.
+ * @param names a string (a comma-separated list of names), symbol, or an array of strings and symbols that denotes the name of the accessor.
+ * @param getter a function with no arguments that returns a value.
+ * @param setter a function with one argument that sets a value.
+ * @param force if truthy, the accessor will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoAccessor(
+  Class: {prototype: object},
+  names: string | symbol | (string | symbol)[],
+  getter: () => any,
+  setter: (value: any) => void,
+  force?: boolean
+): object;
+
+/**
+ * Adds accessors to a class's prototype defined by a dictionary.
+ * Sugar for `addAccessors(Class.prototype, dict, force)`.
+ *
+ * @param Class the class whose prototype will receive the accessors.
+ * @param dict a dictionary {@link AccessorDict} where the keys are the names of the accessors to add and the values are getter/setter pairs.
+ * @param force if truthy, the accessor will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoAccessors(
+  Class: {prototype: object},
+  dict: AccessorDict,
+  force?: boolean
+): object;
+
+/**
  * Adds a getter to a class's prototype under one or more names.
  * Sugar for `addGetter(Class.prototype, names, getter, force)`.
  *
@@ -159,6 +287,38 @@ export function addProtoGetter(
 export function addProtoGetters(
   Class: {prototype: object},
   dict: GetterDict,
+  force?: boolean
+): object;
+
+/**
+ * Adds a setter to a class's prototype under one or more names.
+ * Sugar for `addSetter(Class.prototype, names, setter, force)`.
+ *
+ * @param Class the class whose prototype will receive the setter.
+ * @param names a string (a comma-separated list of names), symbol, or an array of strings and symbols that denotes the name of the setter.
+ * @param setter a function with one argument that sets a value.
+ * @param force if truthy, the setter will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoSetter(
+  Class: {prototype: object},
+  names: string | symbol | (string | symbol)[],
+  setter: (value: any) => void,
+  force?: boolean
+): object;
+
+/**
+ * Adds setters to a class's prototype defined by a dictionary.
+ * Sugar for `addSetters(Class.prototype, dict, force)`.
+ *
+ * @param Class the class whose prototype will receive the setters.
+ * @param dict a dictionary {@link SetterDict} where the keys are the names of the setters to add and the values are the setters.
+ * @param force if truthy, the setter will be added even if it already exists on the prototype.
+ * @returns the prototype object.
+ */
+export function addProtoSetters(
+  Class: {prototype: object},
+  dict: SetterDict,
   force?: boolean
 ): object;
 

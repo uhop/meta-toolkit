@@ -10,7 +10,10 @@ import {
   toSnakeCase,
   fromSnakeCase,
   toKebabCase,
-  fromKebabCase
+  fromKebabCase,
+  fromWords,
+  toWords,
+  toTitleCase
 } from '../src/names.js';
 
 test('Types: names — from* return string[]', t => {
@@ -28,6 +31,13 @@ test('Types: names — to* accept string[] and return string', t => {
   const c: string = toSnakeCase(parts);
   const d: string = toAllCapsSnakeCase(parts);
   const e: string = toKebabCase(parts);
+  t.pass();
+});
+
+test('Types: names — words family', t => {
+  const a: string[] = fromWords('foo bar');
+  const b: string = toWords(['foo', 'bar']);
+  const c: string = toTitleCase(['foo', 'bar']);
   t.pass();
 });
 

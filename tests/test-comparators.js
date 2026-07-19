@@ -4,6 +4,7 @@ import {
   compareFromLess,
   lessFromCompare,
   equalFromLess,
+  equalFromCompare,
   reverseLess,
   reverseCompare
 } from '../src/comparators.js';
@@ -24,6 +25,12 @@ test('Comparators: equalFromLess()', t => {
   t.equal(equalFromLess((a, b) => a < b)(1, 2), false);
   t.equal(equalFromLess((a, b) => a < b)(2, 1), false);
   t.equal(equalFromLess((a, b) => a < b)(2, 2), true);
+});
+
+test('Comparators: equalFromCompare()', t => {
+  t.equal(equalFromCompare((a, b) => a - b)(1, 2), false);
+  t.equal(equalFromCompare((a, b) => a - b)(2, 1), false);
+  t.equal(equalFromCompare((a, b) => a - b)(2, 2), true);
 });
 
 test('Comparators: reverseLess()', t => {

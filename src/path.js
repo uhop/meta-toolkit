@@ -13,6 +13,17 @@ export const get = (object, path, {delimiter = '.', defaultValue = undefined} = 
   return object;
 };
 
+export const has = (object, path, {delimiter = '.'} = {}) => {
+  if (typeof path == 'string') {
+    path = path.split(delimiter);
+  }
+  for (let i = 0; i < path.length; ++i) {
+    if (!object || !canHaveProps[typeof object] || !(path[i] in object)) return false;
+    object = object[path[i]];
+  }
+  return true;
+};
+
 export const set = (object, path, value, {delimiter = '.', defaultValue = undefined} = {}) => {
   if (typeof path == 'string') {
     path = path.split(delimiter);

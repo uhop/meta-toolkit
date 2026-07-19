@@ -1,6 +1,6 @@
 import test from 'tape-six';
 
-import {get, set, remove, forceSet} from '../src/path.js';
+import {get, has, set, remove, forceSet} from '../src/path.js';
 
 test('Path', t => {
   const object = {};
@@ -44,6 +44,21 @@ test('Path: set() with non-existent path', t => {
   t.equal(set(object, 'a.c.d', 2, {defaultValue: nothing}), nothing);
   t.equal(set(object, 'x.y', 2, {defaultValue: nothing}), nothing);
   t.deepEqual(object, {a: {b: 1}});
+});
+
+test('Path: has()', t => {
+  const object = {a: {b: {c: undefined}}};
+
+  t.equal(has(object, 'a.b.c'), true);
+  t.equal(has(object, 'a.b.d'), false);
+  t.equal(has(object, 'a.B.c'), false);
+  t.equal(has(object, ['a', 'b']), true);
+  t.equal(has(object, 'a/b', {delimiter: '/'}), true);
+  t.equal(has(object, []), true);
+  t.equal(has({}, 'a'), false);
+
+  t.equal(get(object, 'a.b.c'), undefined);
+  t.equal(has(object, 'a.b.c'), true);
 });
 
 test('Path: remove() edge cases', t => {

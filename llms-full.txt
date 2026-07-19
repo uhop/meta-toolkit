@@ -64,7 +64,7 @@ Name-casing conversions. All `from*` functions split a string into `string[]`. A
 ```js
 import {capitalize, fromCamelCase, toCamelCase, fromPascalCase, toPascalCase,
         fromSnakeCase, toSnakeCase, toAllCapsSnakeCase,
-        fromKebabCase, toKebabCase} from 'meta-toolkit/names.js';
+        fromKebabCase, toKebabCase, fromWords, toWords, toTitleCase} from 'meta-toolkit/names.js';
 ```
 
 ### Functions
@@ -79,6 +79,13 @@ import {capitalize, fromCamelCase, toCamelCase, fromPascalCase, toPascalCase,
 - `toAllCapsSnakeCase(names: string[]): string` — join parts as UPPER_SNAKE_CASE.
 - `fromKebabCase(name: string): string[]` — split kebab-case into parts.
 - `toKebabCase(names: string[]): string` — join parts as kebab-case.
+- `fromWords(name: string): string[]` — split a whitespace-separated name into parts.
+- `toWords(names: string[]): string` — join parts as lowercase space-separated words.
+- `toTitleCase(names: string[]): string` — join parts as space-separated capitalized words.
+
+Note on acronyms: `fromCamelCase`/`fromPascalCase` split before every capital letter, so capital
+runs split into single letters (`'HTMLElement'` → `['H', 'T', 'M', 'L', 'Element']`), and the `to*`
+functions normalize case, so acronyms do not survive a round trip.
 
 ### Example
 
@@ -100,7 +107,8 @@ Property descriptor creation and manipulation helpers.
 
 ```js
 import {defaultDescriptor, makeGetter, makeSetter, makeAccessors,
-        addDescriptor, addDescriptors, addAccessor, addGetters,
+        addDescriptor, addDescriptors, addAccessor, addAccessors,
+        addGetter, addGetters, addSetter, addSetters,
         copyDescriptors} from 'meta-toolkit/descriptors.js';
 ```
 
@@ -119,13 +127,24 @@ import {defaultDescriptor, makeGetter, makeSetter, makeAccessors,
 - `addDescriptor(target: object, names: string | symbol | (string|symbol)[], descriptor: PropertyDescriptor, force?: boolean): object` — define a descriptor on target under one or more names. `names` can be a comma-separated string. Skips existing properties unless `force` is truthy.
 - `addDescriptors(target: object, dict: DescriptorDict, force?: boolean): object` — define multiple descriptors from a dictionary. Keys are comma-separated name strings or symbols; values are descriptors. Supports symbol keys.
 - `addAccessor(target: object, names: string | symbol | (string|symbol)[], getter: () => any, setter: (value: any) => void, force?: boolean): object` — shorthand for `addDescriptor` + `makeAccessors`.
+- `addAccessors(target: object, dict: AccessorDict, force?: boolean): object` — add multiple accessors from a dictionary of `{get, set}` pairs (either member can be omitted).
 - `addGetter(target: object, names: string | symbol | (string|symbol)[], getter: () => any, force?: boolean): object` — singular counterpart of `addGetters`. Adds a single getter under one or more names.
 - `addGetters(target: object, dict: GetterDict, force?: boolean): object` — add multiple getters from a dictionary. Keys are comma-separated name strings; values are getter functions.
+- `addSetter(target: object, names: string | symbol | (string|symbol)[], setter: (value: any) => void, force?: boolean): object` — singular counterpart of `addSetters`. Adds a single setter under one or more names.
+- `addSetters(target: object, dict: SetterDict, force?: boolean): object` — add multiple setters from a dictionary. Keys are comma-separated name strings; values are setter functions.
 
 ### Class-prototype-aware sugar
 
-- `addProtoGetter(Class: {prototype: object}, names: string | symbol | (string|symbol)[], getter: () => any, force?: boolean): object` — equivalent to `addGetter(Class.prototype, names, getter, force)`. Returns the prototype.
-- `addProtoGetters(Class: {prototype: object}, dict: GetterDict, force?: boolean): object` — equivalent to `addGetters(Class.prototype, dict, force)`. Returns the prototype.
+Every installer above has a `Proto` variant that targets `Class.prototype` and returns the prototype:
+
+- `addProtoDescriptor(Class, names, descriptor, force?)` — equivalent to `addDescriptor(Class.prototype, ...)`.
+- `addProtoDescriptors(Class, dict, force?)` — equivalent to `addDescriptors(Class.prototype, ...)`.
+- `addProtoAccessor(Class, names, getter, setter, force?)` — equivalent to `addAccessor(Class.prototype, ...)`.
+- `addProtoAccessors(Class, dict, force?)` — equivalent to `addAccessors(Class.prototype, ...)`.
+- `addProtoGetter(Class, names, getter, force?)` — equivalent to `addGetter(Class.prototype, ...)`.
+- `addProtoGetters(Class, dict, force?)` — equivalent to `addGetters(Class.prototype, ...)`.
+- `addProtoSetter(Class, names, setter, force?)` — equivalent to `addSetter(Class.prototype, ...)`.
+- `addProtoSetters(Class, dict, force?)` — equivalent to `addSetters(Class.prototype, ...)`.
 
 Use these when the call site is targeting a class's prototype, so the code reads `Foo` instead of `Foo.prototype`.
 
@@ -143,6 +162,16 @@ interface DescriptorDict {
 }
 interface GetterDict {
   [name: string | symbol]: () => any;
+}
+interface SetterDict {
+  [name: string | symbol]: (value: any) => void;
+}
+interface AccessorPair {
+  get?: () => any;
+  set?: (value: any) => void;
+}
+interface AccessorDict {
+  [name: string | symbol]: AccessorPair;
 }
 interface AliasDict {
   [name: string | symbol]: string | symbol | (string | symbol)[];
@@ -221,10 +250,12 @@ import {augmentIterator, normalizeIterator, mapIterator, filterIterator} from 'm
 
 ### Functions
 
-- `augmentIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — add `[Symbol.iterator]` returning `this` if not already present.
-- `normalizeIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — uses `Iterator.from()` if available (modern runtimes), otherwise falls back to `augmentIterator`.
-- `mapIterator<T, R>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => R): Iterable<R>` — lazy map. Uses native `iterator.map()` if available.
-- `filterIterator<T>(iterator: Iterable<T>, callbackFn: (value: T, index: number) => boolean): Iterable<T>` — lazy filter. Uses native `iterator.filter()` if available.
+- `augmentIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — add `[Symbol.iterator]` returning `this` if not already present (own-property check).
+- `normalizeIterator<T>(iterator: Iterator<T>): IterableIterator<T>` — uses `Iterator.from()` if available (modern runtimes), otherwise falls back to `augmentIterator`. On modern runtimes the result exposes the full native helper family — `normalizeIterator(it).take(3)`, `.drop()`, `.flatMap()`, etc.
+- `mapIterator<T, R>(iterable: Iterable<T> | Iterator<T>, callbackFn: (value: T, index: number) => R): IterableIterator<R>` — lazy map. Delegates to native `Iterator.prototype.map()` when available.
+- `filterIterator<T>(iterable: Iterable<T> | Iterator<T>, callbackFn: (value: T, index: number) => boolean): IterableIterator<T>` — lazy filter. Delegates to native `Iterator.prototype.filter()` when available.
+
+`mapIterator`/`filterIterator` results are always lazy and single-use — even for arrays (never an eager array). `return()` is forwarded to the source, so an early exit (`break` in `for...of`) closes the source iterator and runs generator cleanup.
 
 ### Example
 
@@ -252,8 +283,8 @@ import {prototypes, getPropertyDescriptor} from 'meta-toolkit/prototypes.js';
 
 ### Functions
 
-- `prototypes(object: object, skipSelf?: boolean): Generator<object>` — generator yielding each prototype in the chain, stopping before `Object.prototype`. If `skipSelf` is truthy, skips the first (own) object.
-- `getPropertyDescriptor(object: object, name: string | symbol): PropertyDescriptor | undefined` — like `Object.getOwnPropertyDescriptor` but walks the entire prototype chain.
+- `prototypes(object: object, skipSelf?: boolean): Generator<object>` — generator yielding each prototype in the chain, stopping before `Object.prototype` (neither it nor `null` is yielded). If `skipSelf` is truthy, skips the first (own) object.
+- `getPropertyDescriptor(object: object, name: string | symbol): PropertyDescriptor | undefined` — like `Object.getOwnPropertyDescriptor` but walks the prototype chain. Because the walk excludes `Object.prototype`, properties defined there (`toString`, `hasOwnProperty`, …) are not found.
 
 ### Example
 
@@ -281,14 +312,16 @@ console.log(typeof desc.value); // 'function'
 Deep property access by dot-delimited string path or array of keys.
 
 ```js
-import {get, set, forceSet, remove} from 'meta-toolkit/path.js';
+import {get, has, set, forceSet, remove} from 'meta-toolkit/path.js';
 ```
 
 ### PathOptions
 
 ```ts
-interface PathOptions {
+interface DelimiterOptions {
   delimiter?: string | RegExp;  // Default: '.'
+}
+interface PathOptions extends DelimiterOptions {
   defaultValue?: any;
 }
 ```
@@ -296,8 +329,9 @@ interface PathOptions {
 ### Functions
 
 - `get(object: object, path: string | (string|symbol)[], options?: PathOptions): any` — get a nested value. Returns `options.defaultValue` if the path does not exist.
-- `set(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value. The path must already exist (intermediate objects are not created). Returns the previous value, or `options.defaultValue` if the path did not exist.
-- `forceSet(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value, creating intermediate empty objects `{}` as needed. Throws `TypeError` if the root object is not dereferenceable or the path is empty.
+- `has(object: object, path: string | (string|symbol)[], options?: DelimiterOptions): boolean` — check that every path segment exists. Distinguishes a missing path from a path holding `undefined`. An empty path refers to the object itself and returns `true`.
+- `set(object: object, path: string | (string|symbol)[], value: any, options?: PathOptions): any` — set a nested value. Intermediate path segments must already exist (only the final property is created). Returns the previous value, or `options.defaultValue` if the path did not exist.
+- `forceSet(object: object, path: string | (string|symbol)[], value: any, options?: DelimiterOptions): any` — set a nested value, creating intermediate empty objects `{}` as needed. Throws `TypeError` if the root object is not dereferenceable or the path is empty.
 - `remove(object: object, path: string | (string|symbol)[], options?: PathOptions): any` — delete a nested property. Returns the removed value, or `options.defaultValue` if the path did not exist.
 
 ### Path safety
@@ -334,7 +368,7 @@ import {copyOptions} from 'meta-toolkit/options.js';
 
 ### Functions
 
-- `copyOptions(target: object, defaults: object, ...sources: object[]): object` — merge defaults then sources into target. If `target` is null/undefined, a new object is created. First, all non-undefined values from `defaults` are copied to `target`. Then, for each source, only keys that exist in `defaults` are copied. Returns `target`.
+- `copyOptions(target: object, defaults: object, ...sources: object[]): object` — merge defaults then sources into target. If `target` is null/undefined, a new object is created. First, all non-undefined values from `defaults` are copied to `target`. Then, for each source, only keys that exist in `defaults` are copied. Source copying is presence-based (`key in source`): an explicit `undefined` in a source overrides the default — use it to unset an option deliberately. Returns `target`.
 
 ### Example
 
@@ -356,17 +390,20 @@ const result = copyOptions({}, defaults, userOpts);
 Adapters between `less` (`(a, b) => boolean`), `compare` (`(a, b) => number`), and `equal` function styles.
 
 ```js
-import {compareFromLess, lessFromCompare, equalFromLess,
+import {compareFromLess, lessFromCompare, equalFromLess, equalFromCompare,
         reverseLess, reverseCompare} from 'meta-toolkit/comparators.js';
 ```
 
 ### Functions
 
-- `compareFromLess(lessFn: (a, b) => boolean): (a, b) => number` — adapt a less function to a compare function. Returns -1, 0, or 1.
-- `lessFromCompare(compareFn: (a, b) => number): (a, b) => boolean` — adapt a compare function to a less function.
-- `equalFromLess(lessFn: (a, b) => boolean): (a, b) => boolean` — derive equality: returns true if neither `less(a,b)` nor `less(b,a)`.
-- `reverseLess(lessFn: (a, b) => boolean): (a, b) => boolean` — reverse a less function (swaps arguments).
-- `reverseCompare(compareFn: (a, b) => number): (a, b) => number` — reverse a compare function (swaps arguments).
+All adapters are generic: `<T = any>` — a typed input comparator propagates its element type to the result.
+
+- `compareFromLess<T>(lessFn: (a: T, b: T) => boolean): (a: T, b: T) => number` — adapt a less function to a compare function. Returns -1, 0, or 1.
+- `lessFromCompare<T>(compareFn: (a: T, b: T) => number): (a: T, b: T) => boolean` — adapt a compare function to a less function.
+- `equalFromLess<T>(lessFn: (a: T, b: T) => boolean): (a: T, b: T) => boolean` — derive equality: returns true if neither `less(a,b)` nor `less(b,a)`.
+- `equalFromCompare<T>(compareFn: (a: T, b: T) => number): (a: T, b: T) => boolean` — derive equality: returns true if `compare(a,b) === 0`.
+- `reverseLess<T>(lessFn: (a: T, b: T) => boolean): (a: T, b: T) => boolean` — reverse a less function (swaps arguments).
+- `reverseCompare<T>(compareFn: (a: T, b: T) => number): (a: T, b: T) => number` — reverse a compare function (swaps arguments).
 
 ### Example
 

@@ -10,7 +10,10 @@ import {
   toSnakeCase,
   fromSnakeCase,
   toKebabCase,
-  fromKebabCase
+  fromKebabCase,
+  fromWords,
+  toWords,
+  toTitleCase
 } from '../src/names.js';
 
 test('Names: capitalize', t => {
@@ -56,6 +59,18 @@ test('Names: snake case', t => {
   t.deepEqual(toAllCapsSnakeCase(['Foo', 'bAr', 'bAZ']), 'FOO_BAR_BAZ');
   t.deepEqual(toAllCapsSnakeCase(['foo']), 'FOO');
   t.deepEqual(toAllCapsSnakeCase(['']), '');
+});
+
+test('Names: words', t => {
+  t.deepEqual(fromWords('foo bar baz'), ['foo', 'bar', 'baz']);
+  t.deepEqual(fromWords('foo  bar'), ['foo', 'bar']);
+  t.deepEqual(fromWords('foo'), ['foo']);
+
+  t.deepEqual(toWords(['Foo', 'bAr', 'baz']), 'foo bar baz');
+  t.deepEqual(toWords(['foo']), 'foo');
+
+  t.deepEqual(toTitleCase(['foo', 'bAr', 'baz']), 'Foo Bar Baz');
+  t.deepEqual(toTitleCase(['foo']), 'Foo');
 });
 
 test('Names: kebab case', t => {

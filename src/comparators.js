@@ -6,6 +6,8 @@ export const lessFromCompare = compareFn => (a, b) => compareFn(a, b) < 0;
 
 export const equalFromLess = lessFn => (a, b) => Boolean(lessFn(a, b)) === Boolean(lessFn(b, a));
 
+export const equalFromCompare = compareFn => (a, b) => compareFn(a, b) === 0;
+
 export const reverseLess = lessFn => (a, b) => lessFn(b, a);
 
 export const reverseCompare = compareFn => (a, b) => compareFn(b, a);

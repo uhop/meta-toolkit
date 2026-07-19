@@ -27,7 +27,7 @@ The `names.js` module converts between compound name formats. All `from*` functi
 
 ### Property descriptors
 
-The `descriptors.js` module provides factories (`makeGetter`, `makeSetter`, `makeAccessors`) and installers (`addDescriptor`, `addDescriptors`, `addAccessor`, `addGetter`, `addGetters`, `copyDescriptors`) for working with property descriptors. Names can be specified as comma-separated strings, symbols, or arrays — enabling multiple aliases in a single call. Class-prototype-aware sugar (`addProtoGetter`, `addProtoGetters`) targets `Class.prototype` so call sites read `Foo` instead of `Foo.prototype`.
+The `descriptors.js` module provides factories (`makeGetter`, `makeSetter`, `makeAccessors`) and installers (`addDescriptor`, `addDescriptors`, `addAccessor`, `addAccessors`, `addGetter`, `addGetters`, `addSetter`, `addSetters`, `copyDescriptors`) for working with property descriptors. Names can be specified as comma-separated strings, symbols, or arrays — enabling multiple aliases in a single call. Every installer has a class-prototype-aware `addProto*` twin that targets `Class.prototype` so call sites read `Foo` instead of `Foo.prototype`.
 
 ### Aliases
 
@@ -35,7 +35,7 @@ The `aliases.js` module is a thin wrapper around `descriptors.js`. `addAlias` co
 
 ### Iterators
 
-The `iterators.js` module provides `augmentIterator` and `normalizeIterator` to ensure iterators have `[Symbol.iterator]`, plus lazy `mapIterator` and `filterIterator` that delegate to native iterator helpers when available.
+The `iterators.js` module provides `augmentIterator` and `normalizeIterator` to ensure iterators have `[Symbol.iterator]`, plus lazy `mapIterator` and `filterIterator` that delegate to native iterator helpers when available. Results are single-use and forward `return()` to the source, so early exits run generator cleanup. `normalizeIterator` is the gateway to the rest of the native helper family (`take`, `drop`, `flatMap`, …) — the module deliberately wraps no further helpers.
 
 ### Prototypes
 
@@ -43,7 +43,7 @@ The `prototypes.js` module provides a `prototypes()` generator for walking the p
 
 ### Path
 
-The `path.js` module provides `get`, `set`, `forceSet`, and `remove` for deep property access using dot-delimited string paths or arrays of keys. `forceSet` creates intermediate objects as needed.
+The `path.js` module provides `get`, `has`, `set`, `forceSet`, and `remove` for deep property access using dot-delimited string paths or arrays of keys. `has` distinguishes a missing path from an `undefined` value. `forceSet` creates intermediate objects as needed.
 
 **Trust boundary**: these functions walk user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). Callers passing externally-sourced paths are responsible for validation at the application boundary.
 
@@ -53,7 +53,7 @@ The `options.js` module provides `copyOptions` for merging constructor options: 
 
 ### Comparators
 
-The `comparators.js` module adapts between `less` (`(a,b) => boolean`), `compare` (`(a,b) => number`), and `equal` function styles, plus reversal utilities.
+The `comparators.js` module adapts between `less` (`(a,b) => boolean`), `compare` (`(a,b) => number`), and `equal` function styles (`equalFromLess`, `equalFromCompare`), plus reversal utilities. All adapters are generic — a typed comparator propagates its element type.
 
 ## Module dependency graph
 

@@ -16,13 +16,20 @@ test('Types: iterators — normalizeIterator generic', t => {
 
 test('Types: iterators — mapIterator types', t => {
   const src: Iterable<number> = [1, 2, 3];
-  const r: Iterable<string> = mapIterator(src, (v: number) => String(v));
+  const r: IterableIterator<string> = mapIterator(src, (v: number) => String(v));
   t.pass();
 });
 
 test('Types: iterators — filterIterator types', t => {
   const src: Iterable<number> = [1, 2, 3];
-  const r: Iterable<number> = filterIterator(src, (v: number) => v > 1);
+  const r: IterableIterator<number> = filterIterator(src, (v: number) => v > 1);
+  t.pass();
+});
+
+test('Types: iterators — bare iterator inputs', t => {
+  const it: Iterator<number> = {next: () => ({value: 1, done: false})};
+  const m: IterableIterator<string> = mapIterator(it, (v: number) => String(v));
+  const f: IterableIterator<number> = filterIterator(it, (v: number) => v > 0);
   t.pass();
 });
 

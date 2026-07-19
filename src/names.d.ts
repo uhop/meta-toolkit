@@ -11,6 +11,9 @@ export function capitalize(name: string): string;
  *
  * @param name the name to split
  * @returns an array of strings
+ * @remarks Splits before every capital letter, so runs of capitals split into single letters:
+ *   `'HTMLElement'` → `['H', 'T', 'M', 'L', 'Element']`. The `to*` functions normalize case,
+ *   so acronyms do not survive a round trip (`toCamelCase(['foo', 'HTML'])` → `'fooHtml'`).
  */
 export function fromCamelCase(name: string): string[];
 
@@ -27,6 +30,7 @@ export function toCamelCase(names: string[]): string;
  *
  * @param name the name to split
  * @returns an array of strings
+ * @remarks Same algorithm as {@link fromCamelCase()} — see its note on capital runs (acronyms).
  */
 export function fromPascalCase(name: string): string[];
 
@@ -77,3 +81,28 @@ export function fromKebabCase(name: string): string[];
  * @returns a kebab-case name
  */
 export function toKebabCase(names: string[]): string;
+
+/**
+ * Splits a whitespace-separated name into an array of strings.
+ *
+ * @param name the name to split
+ * @returns an array of strings
+ */
+export function fromWords(name: string): string[];
+
+/**
+ * Joins an array of strings into a lowercase whitespace-separated name.
+ *
+ * @param names an array of strings
+ * @returns a space-separated lowercase name
+ */
+export function toWords(names: string[]): string;
+
+/**
+ * Joins an array of strings into a space-separated name with every word capitalized.
+ *
+ * @param names an array of strings
+ * @returns a space-separated Title Case name
+ * @remarks Simple title case: every word is capitalized, including articles and prepositions.
+ */
+export function toTitleCase(names: string[]): string;

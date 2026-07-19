@@ -1,6 +1,6 @@
 import test from 'tape-six';
 
-import {get, set, forceSet, remove} from '../src/path.js';
+import {get, has, set, forceSet, remove} from '../src/path.js';
 
 test('Types: path — get signatures', t => {
   const _r1: any = get({}, 'a.b');
@@ -9,6 +9,13 @@ test('Types: path — get signatures', t => {
   const _r4: any = get({}, 'a', {delimiter: '/'});
   const _r5: any = get({}, 'a', {defaultValue: 0});
   const _r6: any = get({}, 'a', {delimiter: '.', defaultValue: null});
+  t.pass();
+});
+
+test('Types: path — has signatures', t => {
+  const _r1: boolean = has({}, 'a.b');
+  const _r2: boolean = has({}, ['a', Symbol()]);
+  const _r3: boolean = has({}, 'a/b', {delimiter: '/'});
   t.pass();
 });
 

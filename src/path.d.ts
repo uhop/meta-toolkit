@@ -1,10 +1,16 @@
 /**
+ * The delimiter options interface.
+ */
+export interface DelimiterOptions {
+  /** The delimiter used to split string paths. Defaults to `'.'`. */
+  delimiter?: string | RegExp;
+}
+
+/**
  * The path options interface.
  */
-interface PathOptions {
-  /** The delimiter to use. */
-  delimiter?: string | RegExp;
-  /** The default value. */
+export interface PathOptions extends DelimiterOptions {
+  /** The default value returned when the path cannot be resolved. */
   defaultValue?: any;
 }
 
@@ -22,6 +28,24 @@ interface PathOptions {
 export function get(object: object, path: string | (string | symbol)[], options?: PathOptions): any;
 
 /**
+ * Checks whether a path exists in an object.
+ *
+ * @param object the object to check.
+ * @param path the path to check in the object. Can be a string (delimited by options.delimiter)
+ *             or an array of strings and symbols.
+ * @param options an object with options. Supported options are:
+ *                - delimiter: the delimiter to use. Defaults to '.'.
+ * @returns true if every segment of the path exists, false otherwise.
+ * @remarks Unlike {@link get()}, it distinguishes a missing path from a path holding `undefined`.
+ *   An empty path refers to the object itself and returns true.
+ */
+export function has(
+  object: object,
+  path: string | (string | symbol)[],
+  options?: DelimiterOptions
+): boolean;
+
+/**
  * Sets a value in an object by path.
  *
  * @param object the object to set a value in.
@@ -32,6 +56,8 @@ export function get(object: object, path: string | (string | symbol)[], options?
  *                - delimiter: the delimiter to use. Defaults to '.'.
  *                - defaultValue: the default value to return if the path does not exist.
  * @returns the previous value at the path, or options.defaultValue if the path did not exist.
+ * @remarks Intermediate path segments must already exist; only the final segment is created.
+ *   Use {@link forceSet()} to create intermediate objects as needed.
  */
 export function set(
   object: object,
@@ -56,7 +82,7 @@ export function forceSet(
   object: object,
   path: string | (string | symbol)[],
   value: any,
-  options?: PathOptions
+  options?: DelimiterOptions
 ): any;
 
 /**

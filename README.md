@@ -16,23 +16,30 @@ iterators, and more.
     - `snake_case` &mdash; `toSnakeCase()`, `fromSnakeCase()`.
       - `SNAKE_CASE` &mdash; `toAllCapsSnakeCase()`.
     - `kebab-case` &mdash; `toKebabCase()`, `fromKebabCase()`.
+    - whitespace-separated words &mdash; `toWords()`, `toTitleCase()`, `fromWords()`.
 - Descriptor manipulation (`meta-toolkit/descriptors.js`) — generate accessors dynamically
   and share them between objects/prototypes:
   - Create descriptors &mdash; `makeGetter()`, `makeSetter()`, `makeAccessors()`.
-  - Add descriptors &mdash; `addDescriptor()`, `addDescriptors()`, `addAccessor()`, `addGetters()`.
+  - Add descriptors &mdash; `addDescriptor()`, `addDescriptors()`, `addAccessor()`, `addAccessors()`,
+    `addGetter()`, `addGetters()`, `addSetter()`, `addSetters()`.
+  - Class-prototype sugar &mdash; `addProtoDescriptor()`, `addProtoDescriptors()`,
+    `addProtoAccessor()`, `addProtoAccessors()`, `addProtoGetter()`, `addProtoGetters()`,
+    `addProtoSetter()`, `addProtoSetters()`.
   - `defaultDescriptor` &mdash; the default descriptor template.
   - Copy descriptors &mdash; `copyDescriptors()`.
 - Aliases (`meta-toolkit/aliases.js`) — alias existing properties:
-  - Alias properties &mdash; `addAlias()`, `addAliases()`.
+  - Alias properties &mdash; `addAlias()`, `addAliases()`, `addProtoAlias()`, `addProtoAliases()`.
 - Prototypes (`meta-toolkit/prototypes.js`) — inspect prototypes:
   - Iterate over prototypes &mdash; `prototypes()`.
   - `getPropertyDescriptor()` &mdash; similar to `getOwnPropertyDescriptor()`, but for all prototypes
     not just the current object.
-- Iterators (`meta-toolkit/iterators.js`) — simplify creating custom iterators:
-  - Augment iterable with an iterator interface &mdash; `augmentIterator()`, `normalizeIterator()`.
-  - Add array-like methods if not present &mdash; `mapIterator()`, `filterIterator()`.
+- Iterators (`meta-toolkit/iterators.js`) — simplify working with iterators:
+  - Augment an iterator with an iterable interface &mdash; `augmentIterator()`, `normalizeIterator()`
+    (the gateway to the native iterator helpers when the runtime has them).
+  - Lazy transformation helpers &mdash; `mapIterator()`, `filterIterator()`.
 - Path (`meta-toolkit/path.js`) — work with nested objects using paths:
   - Get a value from a nested object by path &mdash; `get()`.
+  - Check that a path exists &mdash; `has()`.
   - Set a value in a nested object by path &mdash; `set()`, `forceSet()`.
   - Remove a value from a nested object by path &mdash; `remove()`.
 - Options (`meta-toolkit/options.js`) — organize options for constructors:
@@ -40,7 +47,8 @@ iterators, and more.
 - Comparators (`meta-toolkit/comparators.js`) — convert between different comparator function styles:
   - Create a compare function from a less function and vice versa &mdash; `compareFromLess()`,
     `lessFromCompare()`.
-  - Create an equality function from a less function &mdash; `equalFromLess()`.
+  - Create an equality function from a less or compare function &mdash; `equalFromLess()`,
+    `equalFromCompare()`.
   - Reverse comparators &mdash; `reverseCompare()`, `reverseLess()`.
 
 Full documentation is in the **[wiki](https://github.com/uhop/meta-toolkit/wiki)** &mdash; browse the [index](https://github.com/uhop/meta-toolkit/wiki/Home), or [search it](https://uhop.github.io/wiki-search/app/?wiki=uhop/meta-toolkit) by name.
