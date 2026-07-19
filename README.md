@@ -43,7 +43,7 @@ iterators, and more.
   - Create an equality function from a less function &mdash; `equalFromLess()`.
   - Reverse comparators &mdash; `reverseCompare()`, `reverseLess()`.
 
-See the full documentation in the [wiki](https://github.com/uhop/meta-toolkit/wiki).
+Full documentation is in the **[wiki](https://github.com/uhop/meta-toolkit/wiki)** &mdash; browse the [index](https://github.com/uhop/meta-toolkit/wiki/Home), or [search it](https://uhop.github.io/wiki-search/app/?wiki=uhop/meta-toolkit) by name.
 
 ## Examples
 

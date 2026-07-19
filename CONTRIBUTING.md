@@ -8,7 +8,7 @@
 ## Setup
 
 ```bash
-git clone --recursive git@github.com:uhop/meta-toolkit.git
+git clone --recursive https://github.com/uhop/meta-toolkit.git
 cd meta-toolkit
 npm install
 ```
@@ -78,3 +78,10 @@ npm run lint:fix        # Auto-format
 ## AI agents
 
 AI coding agents: see [AGENTS.md](./AGENTS.md) for project conventions and commands.
+
+## License
+
+This project is distributed under the [BSD-3-Clause license](./LICENSE).
+External contributions are accepted only under licenses compatible with
+BSD-3-Clause; submissions under fundamentally incompatible licenses cannot
+be merged.

@@ -7,7 +7,7 @@ For project structure, core concepts, and the module dependency graph see [ARCHI
 ## Setup
 
 ```bash
-git clone --recursive git@github.com:uhop/meta-toolkit.git
+git clone --recursive https://github.com/uhop/meta-toolkit.git
 cd meta-toolkit
 npm install
 ```
@@ -32,7 +32,7 @@ npm install
 - **No runtime dependencies.** Never add packages to `dependencies`. Only `devDependencies` are allowed.
 - **Hand-written `.d.ts` files.** They are NOT generated. When modifying a public API, update both the `.js` and `.d.ts` files.
 - **Do not modify or delete test expectations** without understanding why they changed.
-- **Do not add comments or remove comments** unless explicitly asked.
+- **Comments are short _why_-markers only** — a non-trivial decision or constraint, or an algorithm reference; never narrate _what_ the code does. See [fleet slice 20](https://github.com/uhop/claude-config/blob/master/topics/no-narrating-comments.md).
 - **Trust boundary is the caller.** `path.js` (`get`/`set`/`forceSet`/`remove`) walks user-supplied keys without sanitizing magic property names (`__proto__`, `constructor`, `prototype`). Callers passing externally-sourced paths must validate them — the library does not.
 
 ## Code style
