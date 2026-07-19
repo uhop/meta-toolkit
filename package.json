@@ -1,7 +1,7 @@
 {
   "name": "meta-toolkit",
   "description": "Zero-dependency toolkit for meta programming and OOP: name-casing conversions, property descriptors, aliases, prototype traversal, iterators, deep path access, option merging, and comparator adapters",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "type": "module",
   "main": "./src/aliases.js",
   "types": "./src/aliases.d.ts",

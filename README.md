@@ -130,6 +130,7 @@ BSD 3-Clause "New" or "Revised" License. See the LICENSE file for details.
 
 ## Release History
 
+- 1.3.0 _Completed the descriptor family: setters, accessor dictionaries, and `addProto*` sugar for every installer. Added `has()` for paths, `equalFromCompare()`, and word-based name conversions. `mapIterator()`/`filterIterator()` are now always lazy, single-use, and close the source on early exit._
 - 1.2.0 _Added `addProtoAlias`/`addProtoAliases`/`addProtoGetter`/`addProtoGetters`/`addGetter`. Updated dev dependencies._
 - 1.1.9 _Updated dev dependencies._
 - 1.1.8 _Added TS typing tests, CJS test. Fixed `.d.ts` typings for strict mode. Improved docs and workflows. Updated dev dependencies._
